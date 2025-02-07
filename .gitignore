@@ -29,6 +29,18 @@
 _UpgradeReport_Files/
 [Pp]ackages/
 
+# Other
+images/
+global.json
+Migrations/
+
+# OS-specific
 Thumbs.db
 Desktop.ini
 .DS_Store
+
+# Testing
+.TestResults/
+*.coverage
+*.coveragexml
+*.trx
