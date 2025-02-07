@@ -10,7 +10,7 @@ public class Event
     
     [Required(ErrorMessage = "Event name is a required field.")]
     [MaxLength(100, ErrorMessage = "Maximum length for the Name is 100 characters.")]
-    public string EventName { get; init; } = string.Empty;
+    public string Name { get; init; } = string.Empty;
     
     [MaxLength(255, ErrorMessage = "Maximum length for the Description is 255 characters")]
     public string Description { get; init; } = string.Empty;

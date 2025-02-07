@@ -7,8 +7,15 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Events\" />
       <Folder Include="Paricipants\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Domain.Entities\Domain.Entities.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="AutoMapper" Version="13.0.1" />
     </ItemGroup>
 
 </Project>
