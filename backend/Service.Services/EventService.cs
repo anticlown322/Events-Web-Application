@@ -7,17 +7,17 @@ namespace Service.Services;
 
 internal sealed class EventService : IEventService
 {
+    private readonly ILoggerManager _logger;
     private readonly IRepositoryManager _repository;
 
-    public EventService(IRepositoryManager repository)
+    public EventService(IRepositoryManager repository, ILoggerManager logger)
     {
         _repository = repository;
+        _logger = logger;
     }
     
     public IEnumerable<EventDto> GetAllEvents(bool trackChanges)
     {
-        try
-        {
             var events = _repository.Event.GetAllEvents(trackChanges);
 
             var eventsDto = events.Select(e =>
@@ -31,12 +31,7 @@ internal sealed class EventService : IEventService
                         e.MaxParticipants,
                         e.Image))
                 .ToList();
+
             return eventsDto;
-        }
-        catch (Exception ex)
-        {
-            // add loger later
-            throw;
-        }
     }
 }

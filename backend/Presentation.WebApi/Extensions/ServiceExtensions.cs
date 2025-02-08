@@ -3,11 +3,15 @@ using Domain.Repository;
 using Microsoft.EntityFrameworkCore;
 using Service.Contracts;
 using Service.Services;
+using Shared.Logger;
 
-namespace EventsWebApp.Extensions;
+namespace Presentation.WebApi.Extensions;
 
 public static class ServiceExtensions
 {
+    public static void ConfigureLoggerService(this IServiceCollection services) =>
+        services.AddSingleton<ILoggerManager, LoggerManager>();
+    
     public static void ConfigureRepositoryManager(this IServiceCollection services) =>
         services.AddScoped<IRepositoryManager, RepositoryManager>();
     

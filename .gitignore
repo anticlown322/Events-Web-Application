@@ -44,3 +44,8 @@ Desktop.ini
 *.coverage
 *.coveragexml
 *.trx
+
+# Logs
+*.log
+logs/
+internal_logs/

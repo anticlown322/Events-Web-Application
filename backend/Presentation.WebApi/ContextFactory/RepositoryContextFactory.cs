@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
-namespace EventsWebApp.ContextFactory;
+namespace Presentation.WebApi.ContextFactory;
 
 public class RepositoryContextFactory : IDesignTimeDbContextFactory<RepositoryContext>
 {
@@ -16,7 +16,7 @@ public class RepositoryContextFactory : IDesignTimeDbContextFactory<RepositoryCo
         var builder = new DbContextOptionsBuilder<RepositoryContext>()
             .UseSqlServer(
                 configuration.GetConnectionString("sqlConnection"),
-                builder => builder.MigrationsAssembly("EventsWebApp"));
+                builder => builder.MigrationsAssembly("Presentation.WebApi"));
 
         return new RepositoryContext(builder.Options);
     }
