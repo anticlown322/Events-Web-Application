@@ -1,14 +1,89 @@
-﻿using Domain.Contracts;
+﻿using AutoMapper;
+using Domain.Contracts;
+using Domain.Entities.Exceptions;
+using Domain.Entities.Models;
 using Service.Contracts;
+using Shared.DTO.Participants;
 
 namespace Service.Services;
 
 internal sealed class ParticipantService : IParticipantService
 {
     private readonly IRepositoryManager _repository;
+    private readonly IMapper _mapper;
 
-    public ParticipantService(IRepositoryManager repository)
+    public ParticipantService(IRepositoryManager repository, IMapper mapper)
     {
         _repository = repository;
+        _mapper = mapper;
+    }
+
+    public IEnumerable<ParticipantDto> GetAllParticipants(Guid eventId, bool trackChanges)
+    {
+        var participantsEvent = _repository.Event.GetEvent(eventId, trackChanges);
+        if (participantsEvent is null)
+            throw new EventNotFoundException(eventId);
+        
+        var participants = _repository.Participant.GetAllParticipants(eventId, trackChanges);
+        var participantsDto = _mapper.Map<IEnumerable<ParticipantDto>>(participants);
+
+        return participantsDto;
+    }
+
+    public ParticipantDto GetParticipant(Guid eventId, Guid participantId, bool trackChanges)
+    {
+        var participantEvent  = _repository.Event.GetEvent(eventId, trackChanges);
+        if(participantEvent is null)
+            throw new EventNotFoundException(eventId);
+        
+        var participant = _repository.Participant.GetParticipant(eventId, participantId, trackChanges);
+        if (participant is null)
+            throw new ParticipantNotFoundException(participantId);
+        
+        var participantDto = _mapper.Map<ParticipantDto>(participant);
+        return participantDto;
+    }
+
+    public RegistrationResult CreateParticipant(Guid eventId, ParticipantForCreationDto participantForCreation, bool trackChanges)
+    {
+        var participantEvent = _repository.Event.GetEvent(eventId, trackChanges);
+        if(participantEvent is null)
+            throw new EventNotFoundException(eventId);
+
+        if (participantEvent.Participants.Count >= participantEvent.MaxParticipants)
+        {
+            return new RegistrationResult()
+            {
+                IsSuccessful = false,
+                Participant = null
+            };
+        }
+        
+        var participantEntity = _mapper.Map<Participant>(participantForCreation);
+        
+        _repository.Participant.CreateParticipantForEvent(eventId, participantEntity);
+        _repository.Save();
+        
+        var participantToReturn = _mapper.Map<ParticipantDto>(participantEntity);
+
+        return new RegistrationResult()
+        {
+            IsSuccessful = true,
+            Participant = participantToReturn
+        };
+    }
+
+    public void DeleteParticipantForEvent(Guid eventId, Guid participantId, bool trackChanges)
+    {
+        var participantEvent  = _repository.Event.GetEvent(eventId, trackChanges);
+        if(participantEvent is null)
+            throw new EventNotFoundException(eventId);
+        
+        var participant = _repository.Participant.GetParticipant(eventId, participantId, trackChanges);
+        if (participant is null)
+            throw new ParticipantNotFoundException(participantId);
+        
+        _repository.Participant.DeleteParticipant(participant);
+        _repository.Save();
     }
 }

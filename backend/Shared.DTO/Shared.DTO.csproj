@@ -7,10 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Paricipants\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\Domain.Entities\Domain.Entities.csproj" />
     </ItemGroup>
 

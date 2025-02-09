@@ -10,8 +10,16 @@ public class EventMappingProfile : Profile
     {
         CreateMap<Event, EventDto>()
             .ForMember(dest => dest.StartDate,
-                opts => opts
-                    .MapFrom(src => src.StartDate.ToString("g"))); 
+                opts => opts.MapFrom(src => src.StartDate.ToString("g")));
 
+        CreateMap<EventForCreationDto, Event>()
+            .ForMember(dest => dest.StartDate,
+                opts => opts
+                    .MapFrom(src => DateTime.Parse(src.StartDate).ToUniversalTime()));
+        
+        CreateMap<EventForUpdateDto, Event>()
+            .ForMember(dest => dest.StartDate,
+                opts => opts
+                    .MapFrom(src => DateTime.Parse(src.StartDate).ToUniversalTime()));
     }
 }

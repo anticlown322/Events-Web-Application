@@ -1,10 +1,10 @@
 ﻿using Domain.Entities.Models;
+using Shared.DTO.Participants;
 
 namespace Shared.DTO.Events;
 
-public class EventDto
+public class EventForCreationDto
 {
-    public Guid Id { get; init; }
     public string Name { get; init; } = string.Empty;
     public string Description { get; init; } = string.Empty;
     public string StartDate { get; init; } = string.Empty;

@@ -8,7 +8,6 @@
 
     <ItemGroup>
       <Folder Include="ConfigModels\" />
-      <Folder Include="Exceptions\" />
     </ItemGroup>
 
     <ItemGroup>

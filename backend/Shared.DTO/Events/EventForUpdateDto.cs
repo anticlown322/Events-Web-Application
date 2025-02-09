@@ -2,9 +2,8 @@
 
 namespace Shared.DTO.Events;
 
-public class EventDto
+public class EventForUpdateDto
 {
-    public Guid Id { get; init; }
     public string Name { get; init; } = string.Empty;
     public string Description { get; init; } = string.Empty;
     public string StartDate { get; init; } = string.Empty;
