@@ -20,9 +20,9 @@ internal sealed class ParticipantService : IParticipantService
 
     public IEnumerable<ParticipantDto> GetAllParticipants(Guid eventId, bool trackChanges)
     {
-        var participantsEvent = _repository.Event.GetEvent(eventId, trackChanges);
+        var participantsEvent = _repository.Event.GetEventById(eventId, trackChanges);
         if (participantsEvent is null)
-            throw new EventNotFoundException(eventId);
+            throw new EventNotFoundByIdException(eventId);
         
         var participants = _repository.Participant.GetAllParticipants(eventId, trackChanges);
         var participantsDto = _mapper.Map<IEnumerable<ParticipantDto>>(participants);
@@ -32,9 +32,9 @@ internal sealed class ParticipantService : IParticipantService
 
     public ParticipantDto GetParticipant(Guid eventId, Guid participantId, bool trackChanges)
     {
-        var participantEvent  = _repository.Event.GetEvent(eventId, trackChanges);
+        var participantEvent  = _repository.Event.GetEventById(eventId, trackChanges);
         if(participantEvent is null)
-            throw new EventNotFoundException(eventId);
+            throw new EventNotFoundByIdException(eventId);
         
         var participant = _repository.Participant.GetParticipant(eventId, participantId, trackChanges);
         if (participant is null)
@@ -46,9 +46,9 @@ internal sealed class ParticipantService : IParticipantService
 
     public RegistrationResult CreateParticipant(Guid eventId, ParticipantForCreationDto participantForCreation, bool trackChanges)
     {
-        var participantEvent = _repository.Event.GetEvent(eventId, trackChanges);
+        var participantEvent = _repository.Event.GetEventById(eventId, trackChanges);
         if(participantEvent is null)
-            throw new EventNotFoundException(eventId);
+            throw new EventNotFoundByIdException(eventId);
 
         if (participantEvent.Participants.Count >= participantEvent.MaxParticipants)
         {
@@ -75,9 +75,9 @@ internal sealed class ParticipantService : IParticipantService
 
     public void DeleteParticipantForEvent(Guid eventId, Guid participantId, bool trackChanges)
     {
-        var participantEvent  = _repository.Event.GetEvent(eventId, trackChanges);
+        var participantEvent  = _repository.Event.GetEventById(eventId, trackChanges);
         if(participantEvent is null)
-            throw new EventNotFoundException(eventId);
+            throw new EventNotFoundByIdException(eventId);
         
         var participant = _repository.Participant.GetParticipant(eventId, participantId, trackChanges);
         if (participant is null)

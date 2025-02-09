@@ -15,9 +15,13 @@ public class EventsRepository : RepositoryBase<Event>, IEventsRepository
             .OrderBy(e => e.Name)
             .ToList();
 
-    public Event GetEvent(Guid eventId, bool trackChanges) =>
+    public Event GetEventById(Guid eventId, bool trackChanges) =>
         FindByCondition(e => e.Id.Equals(eventId), trackChanges)
             .SingleOrDefault();
+
+    public Event GetEventByName(string name, bool trackChanges) =>
+        FindByCondition(e => e.Name.Equals(name), trackChanges)
+            .FirstOrDefault();
 
     public void CreateEvent(Event eventToCreate) => Create(eventToCreate);
 

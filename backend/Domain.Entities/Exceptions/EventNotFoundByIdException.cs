@@ -1,8 +1,8 @@
 ﻿namespace Domain.Entities.Exceptions;
 
-public sealed class EventNotFoundException : NotFoundException
+public sealed class EventNotFoundByIdException : NotFoundException
 {
-    public EventNotFoundException(Guid eventId)
+    public EventNotFoundByIdException(Guid eventId)
         :base ($"The event with id: {eventId} does not exist in the database.")
     {
     }

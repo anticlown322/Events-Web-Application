@@ -16,7 +16,7 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.ConfigureSqlContext(builder.Configuration); 
     builder.Services.ConfigureAutoMapper();
 
-    // to find controllers in Presentation.Core assembly
+    
     builder.Services.AddControllers()
         .AddApplicationPart(typeof(Presentation.Core.AssemblyReference).Assembly);
     

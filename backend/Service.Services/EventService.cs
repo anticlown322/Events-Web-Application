@@ -27,11 +27,21 @@ internal sealed class EventService : IEventService
         return eventsDto;
     }
 
-    public EventDto GetEvent(Guid eventId, bool trackChanges)
+    public EventDto GetEventById(Guid eventId, bool trackChanges)
     {
-        var eventToGet = _repository.Event.GetEvent(eventId, trackChanges);
+        var eventToGet = _repository.Event.GetEventById(eventId, trackChanges);
         if (eventToGet is null)
-            throw new EventNotFoundException(eventId);
+            throw new EventNotFoundByIdException(eventId);
+
+        var eventDto = _mapper.Map<EventDto>(eventToGet);
+        return eventDto;
+    }
+    
+    public EventDto GetEventByName(string name, bool trackChanges)
+    {
+        var eventToGet = _repository.Event.GetEventByName(name, trackChanges);
+        if (eventToGet is null)
+            throw new EventNotFoundByNameException(name);
 
         var eventDto = _mapper.Map<EventDto>(eventToGet);
         return eventDto;
@@ -64,9 +74,9 @@ internal sealed class EventService : IEventService
 
     public void DeleteEvent(Guid eventId, bool trackChanges)
     {
-        var eventToGet = _repository.Event.GetEvent(eventId, trackChanges);
+        var eventToGet = _repository.Event.GetEventById(eventId, trackChanges);
         if (eventToGet is null)
-            throw new EventNotFoundException(eventId);
+            throw new EventNotFoundByIdException(eventId);
 
         _repository.Event.DeleteEvent(eventToGet);
         _repository.Save();
@@ -74,9 +84,9 @@ internal sealed class EventService : IEventService
 
     public void UpdateEvent(Guid eventId, EventForUpdateDto eventToUpdate, bool trackChanges)
     {
-        var eventEntity = _repository.Event.GetEvent(eventId, trackChanges);
+        var eventEntity = _repository.Event.GetEventById(eventId, trackChanges);
         if (eventEntity is null)
-            throw new EventNotFoundException(eventId);
+            throw new EventNotFoundByIdException(eventId);
 
         _mapper.Map(eventToUpdate, eventEntity);
         _repository.Save();

@@ -21,9 +21,16 @@ public class EventsController(IServiceManager service, ILoggerManager logger) : 
     }
     
     [HttpGet("{id:guid}", Name = "EventById")]
-    public IActionResult GetEvent(Guid id)
+    public IActionResult GetEventById(Guid id)
     {
-        var eventToGet = _service.EventService.GetEvent(id, trackChanges: false);
+        var eventToGet = _service.EventService.GetEventById(id, trackChanges: false);
+        return Ok(eventToGet);
+    }
+    
+    [HttpGet("{name}", Name = "EventByName")]
+    public IActionResult GetEventByName(string name)
+    {
+        var eventToGet = _service.EventService.GetEventByName(name, trackChanges: false);
         return Ok(eventToGet);
     }
     
