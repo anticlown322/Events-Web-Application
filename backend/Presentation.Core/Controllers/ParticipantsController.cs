@@ -15,35 +15,35 @@ public class ParticipantsController : ControllerBase
     public ParticipantsController(IServiceManager service) => _service = service;
     
     [HttpGet]
-    public IActionResult GetParticipantsForEvent(Guid eventId)
+    public async Task<IActionResult> GetParticipantsForEvent(Guid eventId)
     {
-        var employees = _service.ParticipantService.GetAllParticipants(eventId, trackChanges: false);
+        var employees = await _service.ParticipantService.GetAllParticipantsAsync(eventId, trackChanges: false);
         return Ok(employees);
     }
 
     [HttpGet("{id:guid}", Name = "GetParticipantForEvent")]
-    public IActionResult GetParticipantForEvent(Guid eventId, Guid id)
+    public async Task<IActionResult> GetParticipantForEvent(Guid eventId, Guid id)
     {
-        var participant = _service.ParticipantService.GetParticipant(eventId, id, trackChanges: false);
+        var participant = await _service.ParticipantService.GetParticipantByIdAsync(eventId, id, trackChanges: false);
         return Ok(participant);
     }
     
     [HttpPost]
-    public IActionResult CreateParticipantForEvent(Guid eventId, [FromBody] ParticipantForCreationDto participant)
+    public async Task<IActionResult> CreateParticipantForEvent(Guid eventId, [FromBody] ParticipantForCreationDto participant)
     {
         if (participant is null)
             return BadRequest("ParticipantForCreationDto object is null");
         
-        var registrationResult = _service.ParticipantService
-            .CreateParticipant(eventId, participant, trackChanges: false);
+        var registrationResult = await _service.ParticipantService
+            .CreateParticipantAsync(eventId, participant, trackChanges: false);
 
         return Ok(registrationResult);
     }
     
     [HttpDelete("{id:guid}")]
-    public IActionResult DeleteParticipantForEvent(Guid eventId, Guid id)
+    public async Task<IActionResult> DeleteParticipantForEvent(Guid eventId, Guid id)
     {
-        _service.ParticipantService.DeleteParticipantForEvent(eventId, id, trackChanges: false);
+        await _service.ParticipantService.DeleteParticipantAsync(eventId, id, trackChanges: false);
         return NoContent();
     }
 

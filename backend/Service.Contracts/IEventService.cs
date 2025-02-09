@@ -5,11 +5,11 @@ namespace Service.Contracts;
 
 public interface IEventService
 {
-    IEnumerable<EventDto> GetAllEvents(bool trackChanges);
-    EventDto GetEventById(Guid eventId, bool trackChanges);
-    EventDto GetEventByName(string name, bool trackChanges);
-    EventDto CreateEvent(EventForCreationDto eventToCreate);
-    IEnumerable<EventDto> GetEventsByIds(IEnumerable<Guid> ids, bool trackChanges);
-    void DeleteEvent(Guid eventId, bool trackChanges);
-    void UpdateEvent(Guid eventId, EventForUpdateDto eventToUpdate, bool trackChanges);
+    Task<IEnumerable<EventDto>> GetAllEventsAsync(bool trackChanges);
+    Task<EventDto> GetEventByIdAsync(Guid eventId, bool trackChanges);
+    Task<EventDto> GetEventByNameAsync(string name, bool trackChanges);
+    Task<EventDto> CreateEventAsync(EventForCreationDto eventToCreate);
+    Task<IEnumerable<EventDto>> GetEventsByIdsAsync(IEnumerable<Guid> ids, bool trackChanges);
+    Task DeleteEventAsync(Guid eventId, bool trackChanges);
+    Task UpdateEventAsync(Guid eventId, EventForUpdateDto eventToUpdate, bool trackChanges);
 }

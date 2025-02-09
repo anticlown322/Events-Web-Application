@@ -18,25 +18,25 @@ internal sealed class ParticipantService : IParticipantService
         _mapper = mapper;
     }
 
-    public IEnumerable<ParticipantDto> GetAllParticipants(Guid eventId, bool trackChanges)
+    public async Task<IEnumerable<ParticipantDto>> GetAllParticipantsAsync(Guid eventId, bool trackChanges)
     {
-        var participantsEvent = _repository.Event.GetEventById(eventId, trackChanges);
+        var participantsEvent = await _repository.Event.GetEventByIdAsync(eventId, trackChanges);
         if (participantsEvent is null)
             throw new EventNotFoundByIdException(eventId);
         
-        var participants = _repository.Participant.GetAllParticipants(eventId, trackChanges);
+        var participants = await _repository.Participant.GetAllParticipantsAsync(eventId, trackChanges);
         var participantsDto = _mapper.Map<IEnumerable<ParticipantDto>>(participants);
 
         return participantsDto;
     }
 
-    public ParticipantDto GetParticipant(Guid eventId, Guid participantId, bool trackChanges)
+    public async Task<ParticipantDto> GetParticipantByIdAsync(Guid eventId, Guid participantId, bool trackChanges)
     {
-        var participantEvent  = _repository.Event.GetEventById(eventId, trackChanges);
+        var participantEvent = await _repository.Event.GetEventByIdAsync(eventId, trackChanges);
         if(participantEvent is null)
             throw new EventNotFoundByIdException(eventId);
         
-        var participant = _repository.Participant.GetParticipant(eventId, participantId, trackChanges);
+        var participant = await _repository.Participant.GetParticipantByIdAsync(eventId, participantId, trackChanges);
         if (participant is null)
             throw new ParticipantNotFoundException(participantId);
         
@@ -44,9 +44,9 @@ internal sealed class ParticipantService : IParticipantService
         return participantDto;
     }
 
-    public RegistrationResult CreateParticipant(Guid eventId, ParticipantForCreationDto participantForCreation, bool trackChanges)
+    public async Task<RegistrationResult> CreateParticipantAsync(Guid eventId, ParticipantForCreationDto participantForCreation, bool trackChanges)
     {
-        var participantEvent = _repository.Event.GetEventById(eventId, trackChanges);
+        var participantEvent = await _repository.Event.GetEventByIdAsync(eventId, trackChanges);
         if(participantEvent is null)
             throw new EventNotFoundByIdException(eventId);
 
@@ -61,8 +61,8 @@ internal sealed class ParticipantService : IParticipantService
         
         var participantEntity = _mapper.Map<Participant>(participantForCreation);
         
-        _repository.Participant.CreateParticipantForEvent(eventId, participantEntity);
-        _repository.Save();
+        _repository.Participant.CreateParticipant(eventId, participantEntity);
+        await _repository.SaveAsync();
         
         var participantToReturn = _mapper.Map<ParticipantDto>(participantEntity);
 
@@ -73,17 +73,17 @@ internal sealed class ParticipantService : IParticipantService
         };
     }
 
-    public void DeleteParticipantForEvent(Guid eventId, Guid participantId, bool trackChanges)
+    public async Task DeleteParticipantAsync(Guid eventId, Guid participantId, bool trackChanges)
     {
-        var participantEvent  = _repository.Event.GetEventById(eventId, trackChanges);
+        var participantEvent  = await _repository.Event.GetEventByIdAsync(eventId, trackChanges);
         if(participantEvent is null)
             throw new EventNotFoundByIdException(eventId);
         
-        var participant = _repository.Participant.GetParticipant(eventId, participantId, trackChanges);
+        var participant = await _repository.Participant.GetParticipantByIdAsync(eventId, participantId, trackChanges);
         if (participant is null)
             throw new ParticipantNotFoundException(participantId);
         
         _repository.Participant.DeleteParticipant(participant);
-        _repository.Save();
+        await _repository.SaveAsync();
     }
 }

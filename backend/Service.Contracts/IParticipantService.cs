@@ -5,9 +5,9 @@ namespace Service.Contracts;
 
 public interface IParticipantService
 {
-    IEnumerable<ParticipantDto> GetAllParticipants(Guid eventId, bool trackChanges);
-    ParticipantDto GetParticipant(Guid eventId, Guid participantId, bool trackChanges);
-    RegistrationResult CreateParticipant(Guid eventId, ParticipantForCreationDto participantForCreation, 
+    Task<IEnumerable<ParticipantDto>> GetAllParticipantsAsync(Guid eventId, bool trackChanges);
+    Task<ParticipantDto> GetParticipantByIdAsync(Guid eventId, Guid participantId, bool trackChanges);
+    Task<RegistrationResult> CreateParticipantAsync(Guid eventId, ParticipantForCreationDto participantForCreation, 
         bool trackChanges);
-    void DeleteParticipantForEvent(Guid eventId, Guid participantId, bool trackChanges);
+    Task DeleteParticipantAsync(Guid eventId, Guid participantId, bool trackChanges);
 }

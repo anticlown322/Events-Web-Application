@@ -1,5 +1,6 @@
 ﻿using Domain.Contracts;
 using Domain.Entities.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Domain.Repository.Repositories;
 
@@ -10,24 +11,24 @@ public class EventsRepository : RepositoryBase<Event>, IEventsRepository
     {
     }
 
-    public IEnumerable<Event> GetAllEvents(bool trackChanges) =>
-        FindAll(trackChanges)
+    public async Task<IEnumerable<Event>> GetAllEventsAsync(bool trackChanges) =>
+        await FindAll(trackChanges)
             .OrderBy(e => e.Name)
-            .ToList();
+            .ToListAsync();
 
-    public Event GetEventById(Guid eventId, bool trackChanges) =>
-        FindByCondition(e => e.Id.Equals(eventId), trackChanges)
-            .SingleOrDefault();
+    public async Task<Event> GetEventByIdAsync(Guid eventId, bool trackChanges) =>
+        await FindByCondition(e => e.Id.Equals(eventId), trackChanges)
+            .SingleOrDefaultAsync();
 
-    public Event GetEventByName(string name, bool trackChanges) =>
-        FindByCondition(e => e.Name.Equals(name), trackChanges)
-            .FirstOrDefault();
+    public async Task<Event> GetEventByNameAsync(string name, bool trackChanges) =>
+        await FindByCondition(e => e.Name.Equals(name), trackChanges)
+            .FirstOrDefaultAsync();
 
     public void CreateEvent(Event eventToCreate) => Create(eventToCreate);
 
-    public IEnumerable<Event> GetEventsByIds(IEnumerable<Guid> ids, bool trackChanges) =>
-        FindByCondition(x => ids.Contains(x.Id), trackChanges)
-            .ToList();
+    public async Task<IEnumerable<Event>> GetEventsByIdsAsync(IEnumerable<Guid> ids, bool trackChanges) =>
+        await FindByCondition(x => ids.Contains(x.Id), trackChanges)
+            .ToListAsync();
 
     public void DeleteEvent(Event eventToDelete) => Delete(eventToDelete);
 }

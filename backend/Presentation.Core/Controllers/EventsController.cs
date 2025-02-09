@@ -14,58 +14,57 @@ public class EventsController(IServiceManager service, ILoggerManager logger) : 
     private ILoggerManager _logger = logger;
 
     [HttpGet]
-    public IActionResult GetEvents()
+    public async Task<IActionResult> GetEvents()
     {
-        var events = _service.EventService.GetAllEvents(trackChanges: false);
+        var events = await _service.EventService.GetAllEventsAsync(trackChanges: false);
         return Ok(events);
     }
     
     [HttpGet("{id:guid}", Name = "EventById")]
-    public IActionResult GetEventById(Guid id)
+    public async Task<IActionResult> GetEventById(Guid id)
     {
-        var eventToGet = _service.EventService.GetEventById(id, trackChanges: false);
+        var eventToGet = await _service.EventService.GetEventByIdAsync(id, trackChanges: false);
         return Ok(eventToGet);
     }
     
     [HttpGet("{name}", Name = "EventByName")]
-    public IActionResult GetEventByName(string name)
+    public async Task<IActionResult> GetEventByName(string name)
     {
-        var eventToGet = _service.EventService.GetEventByName(name, trackChanges: false);
+        var eventToGet = await _service.EventService.GetEventByNameAsync(name, trackChanges: false);
         return Ok(eventToGet);
     }
     
     [HttpGet("collection/({ids})", Name = "EventCollection")]
-    public IActionResult GetEventCollection([ModelBinder(BinderType = typeof(ArrayModelBinder))]IEnumerable<Guid> ids)
+    public async Task<IActionResult> GetEventCollection([ModelBinder(BinderType = typeof(ArrayModelBinder))]IEnumerable<Guid> ids)
     {
-        var events = _service.EventService.GetEventsByIds(ids, trackChanges: false);
+        var events = await _service.EventService.GetEventsByIdsAsync(ids, trackChanges: false);
         return Ok(events);
     }
     
     [HttpPost]
-    public IActionResult CreateEvent([FromBody] EventForCreationDto eventToCreate)
+    public async Task<IActionResult> CreateEvent([FromBody] EventForCreationDto eventToCreate)
     {
         if (eventToCreate is null)
             return BadRequest("EventForCreationDto object is null");
         
-        var createdEvent = _service.EventService.CreateEvent(eventToCreate);
+        var createdEvent = await _service.EventService.CreateEventAsync(eventToCreate);
         return CreatedAtRoute("EventById", new { id = createdEvent.Id }, createdEvent);
     }
     
     [HttpDelete("{id:guid}")]
-    public IActionResult DeleteEvent(Guid id)
+    public async Task<IActionResult> DeleteEvent(Guid id)
     {
-        _service.EventService.DeleteEvent(id, trackChanges: false);
+        await _service.EventService.DeleteEventAsync(id, trackChanges: false);
         return NoContent();
     }
     
     [HttpPut("{id:guid}")]
-    public IActionResult UpdateEvent(Guid id, [FromBody] EventForUpdateDto eventForUpdate)
+    public async Task<IActionResult> UpdateEvent(Guid id, [FromBody] EventForUpdateDto eventForUpdate)
     {
         if (eventForUpdate is null)
             return BadRequest("EventForUpdateDto object is null");
         
-        _service.EventService.UpdateEvent(id, eventForUpdate, trackChanges: true);
+        await _service.EventService.UpdateEventAsync(id, eventForUpdate, trackChanges: true);
         return NoContent();
     }
-
 }

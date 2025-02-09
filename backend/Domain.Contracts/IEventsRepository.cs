@@ -4,10 +4,10 @@ namespace Domain.Contracts;
 
 public interface IEventsRepository
 {
-    IEnumerable<Event> GetAllEvents(bool trackChanges);
-    Event GetEventById(Guid eventId, bool trackChanges);
-    Event GetEventByName(string name, bool trackChanges);
+    Task<IEnumerable<Event>> GetAllEventsAsync(bool trackChanges);
+    Task<Event> GetEventByIdAsync(Guid eventId, bool trackChanges);
+    Task<Event> GetEventByNameAsync(string name, bool trackChanges);
     void CreateEvent(Event eventToCreate);
-    IEnumerable<Event> GetEventsByIds(IEnumerable<Guid> ids, bool trackChanges);
+    Task<IEnumerable<Event>> GetEventsByIdsAsync(IEnumerable<Guid> ids, bool trackChanges);
     void DeleteEvent(Event eventToDelete);
 }

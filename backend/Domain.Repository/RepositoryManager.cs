@@ -23,5 +23,5 @@ public sealed class RepositoryManager : IRepositoryManager
     public IEventsRepository Event => _eventsRepository.Value;
     public IParticipantsRepository Participant => _participantsRepository.Value;
     
-    public void Save() => _repositoryContext.SaveChanges();
+    public async Task SaveAsync() => await _repositoryContext.SaveChangesAsync();
 }
