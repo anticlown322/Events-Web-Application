@@ -4,6 +4,7 @@ using Domain.Entities.Exceptions;
 using Domain.Entities.Models;
 using Service.Contracts;
 using Shared.DTO.Participants;
+using Shared.RequestFeatures;
 
 namespace Service.Services;
 
@@ -18,16 +19,20 @@ internal sealed class ParticipantService : IParticipantService
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<ParticipantDto>> GetAllParticipantsAsync(Guid eventId, bool trackChanges)
+    public async Task<(IEnumerable<ParticipantDto> participants, MetaData metaData)> GetParticipantsAsync(Guid eventId, 
+        ParticipantParameters participantParameters, bool trackChanges)
     {
         var participantsEvent = await _repository.Event.GetEventByIdAsync(eventId, trackChanges);
         if (participantsEvent is null)
             throw new EventNotFoundByIdException(eventId);
         
-        var participants = await _repository.Participant.GetAllParticipantsAsync(eventId, trackChanges);
-        var participantsDto = _mapper.Map<IEnumerable<ParticipantDto>>(participants);
+        var participantsWithMetaData = await _repository.Participant
+            .GetParticipantsAsync(eventId, participantParameters, trackChanges);
+        var participantsDto = _mapper.Map<IEnumerable<ParticipantDto>>(participantsWithMetaData);
 
-        return participantsDto;
+        return (
+            participants: participantsDto, 
+            metaData: participantsWithMetaData.MetaData);
     }
 
     public async Task<ParticipantDto> GetParticipantByIdAsync(Guid eventId, Guid participantId, bool trackChanges)

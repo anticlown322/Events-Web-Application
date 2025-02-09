@@ -1,6 +1,7 @@
 ﻿using Domain.Contracts;
 using Domain.Entities.Models;
 using Microsoft.EntityFrameworkCore;
+using Shared.RequestFeatures;
 
 namespace Domain.Repository.Repositories;
 
@@ -11,11 +12,19 @@ public class EventsRepository : RepositoryBase<Event>, IEventsRepository
     {
     }
 
-    public async Task<IEnumerable<Event>> GetAllEventsAsync(bool trackChanges) =>
-        await FindAll(trackChanges)
+    public async Task<PagedList<Event>> GetAllEventsAsync(EventParameters eventParameters,
+        bool trackChanges)
+    {
+        var events = await FindAll(trackChanges)
             .OrderBy(e => e.Name)
+            .Skip((eventParameters.PageNumber - 1) * eventParameters.PageSize)
+            .Take(eventParameters.PageSize)
             .ToListAsync();
 
+        return new PagedList<Event>(events, events.Count, 
+            eventParameters.PageNumber, eventParameters.PageSize);
+    }
+        
     public async Task<Event> GetEventByIdAsync(Guid eventId, bool trackChanges) =>
         await FindByCondition(e => e.Id.Equals(eventId), trackChanges)
             .SingleOrDefaultAsync();

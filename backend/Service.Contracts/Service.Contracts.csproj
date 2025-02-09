@@ -8,6 +8,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Shared.DTO\Shared.DTO.csproj" />
+      <ProjectReference Include="..\Shared.RequestFeatures\Shared.RequestFeatures.csproj" />
     </ItemGroup>
 
 </Project>

@@ -1,11 +1,13 @@
 ﻿using Domain.Entities.Models;
 using Shared.DTO.Events;
+using Shared.RequestFeatures;
 
 namespace Service.Contracts;
 
 public interface IEventService
 {
-    Task<IEnumerable<EventDto>> GetAllEventsAsync(bool trackChanges);
+    Task<(IEnumerable<EventDto> events, MetaData metaData)> GetAllEventsAsync(
+        EventParameters eventParameters, bool trackChanges);
     Task<EventDto> GetEventByIdAsync(Guid eventId, bool trackChanges);
     Task<EventDto> GetEventByNameAsync(string name, bool trackChanges);
     Task<EventDto> CreateEventAsync(EventForCreationDto eventToCreate);

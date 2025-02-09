@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Text.Json;
+using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DTO.Events;
 using Shared.DTO.Participants;
+using Shared.RequestFeatures;
 
 namespace Presentation.Core.Controllers;
 
@@ -15,10 +17,15 @@ public class ParticipantsController : ControllerBase
     public ParticipantsController(IServiceManager service) => _service = service;
     
     [HttpGet]
-    public async Task<IActionResult> GetParticipantsForEvent(Guid eventId)
+    public async Task<IActionResult> GetParticipantsForEvent(Guid eventId, 
+        [FromQuery] ParticipantParameters participantParameters)
     {
-        var employees = await _service.ParticipantService.GetAllParticipantsAsync(eventId, trackChanges: false);
-        return Ok(employees);
+        var pagedResult = await _service.ParticipantService
+            .GetParticipantsAsync(eventId, participantParameters, trackChanges: false);
+        
+        Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(pagedResult.metaData));
+        
+        return Ok(pagedResult.participants);
     }
 
     [HttpGet("{id:guid}", Name = "GetParticipantForEvent")]

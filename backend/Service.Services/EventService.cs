@@ -4,6 +4,7 @@ using Domain.Entities.Exceptions;
 using Domain.Entities.Models;
 using Service.Contracts;
 using Shared.DTO.Events;
+using Shared.RequestFeatures;
 
 namespace Service.Services;
 
@@ -18,13 +19,16 @@ internal sealed class EventService : IEventService
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<EventDto>> GetAllEventsAsync(bool trackChanges)
+    public async Task<(IEnumerable<EventDto> events, MetaData metaData)> GetAllEventsAsync(
+        EventParameters eventParameters, bool trackChanges)
     {
-        var events = await _repository.Event.GetAllEventsAsync(trackChanges);
+        var eventsWithMetaData = await _repository.Event.GetAllEventsAsync(eventParameters, trackChanges);
 
-        var eventsDto = _mapper.Map<IEnumerable<EventDto>>(events);
+        var eventsDto = _mapper.Map<IEnumerable<EventDto>>(eventsWithMetaData);
 
-        return eventsDto;
+        return (
+            events: eventsDto, 
+            metaData: eventsWithMetaData.MetaData);
     }
 
     public async Task<EventDto> GetEventByIdAsync(Guid eventId, bool trackChanges)

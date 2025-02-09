@@ -1,8 +1,10 @@
-﻿using Domain.Contracts;
+﻿using System.Text.Json;
+using Domain.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Core.ModelBinders;
 using Service.Contracts;
 using Shared.DTO.Events;
+using Shared.RequestFeatures;
 
 namespace Presentation.Core.Controllers;
 
@@ -14,10 +16,14 @@ public class EventsController(IServiceManager service, ILoggerManager logger) : 
     private ILoggerManager _logger = logger;
 
     [HttpGet]
-    public async Task<IActionResult> GetEvents()
+    public async Task<IActionResult> GetEvents([FromQuery] EventParameters eventParameters)
     {
-        var events = await _service.EventService.GetAllEventsAsync(trackChanges: false);
-        return Ok(events);
+        var pagedResult = await _service.EventService
+            .GetAllEventsAsync(eventParameters, trackChanges: false);
+        
+        Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(pagedResult.metaData));
+
+        return Ok(pagedResult.events);
     }
     
     [HttpGet("{id:guid}", Name = "EventById")]
