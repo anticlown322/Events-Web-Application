@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DTO.User;
+using Shared.Validators;
 
 namespace Presentation.Core.Controllers;
 
@@ -11,6 +12,7 @@ public class AuthenticationController(IServiceManager service) : ControllerBase
     private readonly IServiceManager _service = service;
     
     [HttpPost]
+    [ValidationFilter<UserForRegistrationDto>]
     public async Task<IActionResult> RegisterUser([FromBody] UserForRegistrationDto userForRegistration)
     {
         var result = await _service.AuthenticationService.RegisterUser(userForRegistration);
@@ -28,6 +30,7 @@ public class AuthenticationController(IServiceManager service) : ControllerBase
     }
 
     [HttpPost("login")]
+    [ValidationFilter<UserForAuthenticationDto>]
     public async Task<IActionResult> Authenticate([FromBody] UserForAuthenticationDto user)
     {
         if (!await _service.AuthenticationService.ValidateUser(user))

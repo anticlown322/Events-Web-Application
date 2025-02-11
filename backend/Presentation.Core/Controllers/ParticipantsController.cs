@@ -5,6 +5,7 @@ using Service.Contracts;
 using Shared.DTO.Events;
 using Shared.DTO.Participants;
 using Shared.RequestFeatures;
+using Shared.Validators;
 
 namespace Presentation.Core.Controllers;
 
@@ -40,6 +41,7 @@ public class ParticipantsController : ControllerBase
     
     [HttpPost]
     [Authorize(Policy= "AdminOnly")]
+    [ValidationFilter<ParticipantForCreationDto>]
     public async Task<IActionResult> CreateParticipantForEvent(Guid eventId, [FromBody] ParticipantForCreationDto participant)
     {
         if (participant is null)

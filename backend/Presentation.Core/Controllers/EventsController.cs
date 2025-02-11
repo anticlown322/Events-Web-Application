@@ -6,6 +6,7 @@ using Presentation.Core.ModelBinders;
 using Service.Contracts;
 using Shared.DTO.Events;
 using Shared.RequestFeatures;
+using Shared.Validators;
 
 namespace Presentation.Core.Controllers;
 
@@ -54,6 +55,7 @@ public class EventsController(IServiceManager service, ILoggerManager logger) : 
     
     [HttpPost]
     [Authorize(Policy= "AdminOnly")]
+    [ValidationFilter<EventForCreationDto>]
     public async Task<IActionResult> CreateEvent([FromBody] EventForCreationDto eventToCreate)
     {
         if (eventToCreate is null)
@@ -73,6 +75,7 @@ public class EventsController(IServiceManager service, ILoggerManager logger) : 
     
     [HttpPut("{id:guid}")]
     [Authorize(Policy= "AdminOnly")]
+    [ValidationFilter<EventForUpdateDto>]
     public async Task<IActionResult> UpdateEvent(Guid id, [FromBody] EventForUpdateDto eventForUpdate)
     {
         if (eventForUpdate is null)

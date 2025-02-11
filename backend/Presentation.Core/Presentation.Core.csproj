@@ -7,10 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="ActionFilters\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.3.0" />
     </ItemGroup>
 
@@ -18,6 +14,7 @@
       <ProjectReference Include="..\Domain.Contracts\Domain.Contracts.csproj" />
       <ProjectReference Include="..\Service.Contracts\Service.Contracts.csproj" />
       <ProjectReference Include="..\Shared.RequestFeatures\Shared.RequestFeatures.csproj" />
+      <ProjectReference Include="..\Shared.Validators\Shared.Validators.csproj" />
     </ItemGroup>
 
 </Project>

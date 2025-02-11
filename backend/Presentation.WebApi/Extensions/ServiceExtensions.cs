@@ -2,6 +2,7 @@
 using Domain.Contracts;
 using Domain.Entities.Models;
 using Domain.Repository;
+using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -9,8 +10,15 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Service.Contracts;
 using Service.Services;
+using Shared.DTO.Events;
 using Shared.DTO.MappingProfiles;
+using Shared.DTO.Participants;
+using Shared.DTO.User;
 using Shared.Logger;
+using Shared.Validators;
+using Shared.Validators.Event;
+using Shared.Validators.Participant;
+using Shared.Validators.User;
 
 namespace Presentation.WebApi.Extensions;
 
@@ -103,4 +111,18 @@ public static class ServiceExtensions
             options.AddPolicy("AdminOrParticipant", policy =>
                 policy.RequireRole("Administrator", "Participant"));
         });
+    
+    public static void AddValidators(this IServiceCollection services)
+    {
+        services.AddTransient<IValidator<Event>, EventValidator>();
+        services.AddTransient<IValidator<EventForCreationDto>, EventCreationDtoValidator>();
+        services.AddTransient<IValidator<EventForUpdateDto>, EventUpdateDtoValidator>();
+        
+        services.AddTransient<IValidator<Participant>, ParticipantValidator>();
+        services.AddTransient<IValidator<ParticipantForCreationDto>, ParticipantCreationDtoValidator>();
+        
+        services.AddTransient<IValidator<User>, UserValidator>();
+        services.AddTransient<IValidator<UserForRegistrationDto>, UserRegistrationDtoValidator>();
+        services.AddTransient<IValidator<UserForAuthenticationDto>, UserAuthenticationDtoValidator>();
+    }
 }

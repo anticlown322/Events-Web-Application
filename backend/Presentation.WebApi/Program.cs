@@ -16,6 +16,7 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.ConfigureServiceManager();
     builder.Services.ConfigureSqlContext(builder.Configuration); 
     builder.Services.ConfigureAutoMapper();
+    builder.Services.AddValidators();
     
     builder.Services.AddAuthentication();
     builder.Services.ConfigureIdentity();

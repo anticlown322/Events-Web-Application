@@ -24,6 +24,7 @@
       <ProjectReference Include="..\Service.Contracts\Service.Contracts.csproj" />
       <ProjectReference Include="..\Service.Services\Service.Services.csproj" />
       <ProjectReference Include="..\Shared.Logger\Shared.Logger.csproj" />
+      <ProjectReference Include="..\Shared.Validators\Shared.Validators.csproj" />
     </ItemGroup>
 
 </Project>
