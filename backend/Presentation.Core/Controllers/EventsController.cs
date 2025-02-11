@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using Domain.Contracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Core.ModelBinders;
 using Service.Contracts;
@@ -16,6 +17,7 @@ public class EventsController(IServiceManager service, ILoggerManager logger) : 
     private ILoggerManager _logger = logger;
 
     [HttpGet]
+    [Authorize(Policy= "AdminOrParticipant")]
     public async Task<IActionResult> GetEvents([FromQuery] EventParameters eventParameters)
     {
         var pagedResult = await _service.EventService
@@ -27,6 +29,7 @@ public class EventsController(IServiceManager service, ILoggerManager logger) : 
     }
     
     [HttpGet("{id:guid}", Name = "EventById")]
+    [Authorize(Policy= "AdminOrParticipant")]
     public async Task<IActionResult> GetEventById(Guid id)
     {
         var eventToGet = await _service.EventService.GetEventByIdAsync(id, trackChanges: false);
@@ -34,6 +37,7 @@ public class EventsController(IServiceManager service, ILoggerManager logger) : 
     }
     
     [HttpGet("{name}", Name = "EventByName")]
+    [Authorize(Policy= "AdminOrParticipant")]
     public async Task<IActionResult> GetEventByName(string name)
     {
         var eventToGet = await _service.EventService.GetEventByNameAsync(name, trackChanges: false);
@@ -41,6 +45,7 @@ public class EventsController(IServiceManager service, ILoggerManager logger) : 
     }
     
     [HttpGet("collection/({ids})", Name = "EventCollection")]
+    [Authorize(Policy= "AdminOrParticipant")]
     public async Task<IActionResult> GetEventCollection([ModelBinder(BinderType = typeof(ArrayModelBinder))]IEnumerable<Guid> ids)
     {
         var events = await _service.EventService.GetEventsByIdsAsync(ids, trackChanges: false);
@@ -48,6 +53,7 @@ public class EventsController(IServiceManager service, ILoggerManager logger) : 
     }
     
     [HttpPost]
+    [Authorize(Policy= "AdminOnly")]
     public async Task<IActionResult> CreateEvent([FromBody] EventForCreationDto eventToCreate)
     {
         if (eventToCreate is null)
@@ -58,6 +64,7 @@ public class EventsController(IServiceManager service, ILoggerManager logger) : 
     }
     
     [HttpDelete("{id:guid}")]
+    [Authorize(Policy= "AdminOnly")]
     public async Task<IActionResult> DeleteEvent(Guid id)
     {
         await _service.EventService.DeleteEventAsync(id, trackChanges: false);
@@ -65,6 +72,7 @@ public class EventsController(IServiceManager service, ILoggerManager logger) : 
     }
     
     [HttpPut("{id:guid}")]
+    [Authorize(Policy= "AdminOnly")]
     public async Task<IActionResult> UpdateEvent(Guid id, [FromBody] EventForUpdateDto eventForUpdate)
     {
         if (eventForUpdate is null)

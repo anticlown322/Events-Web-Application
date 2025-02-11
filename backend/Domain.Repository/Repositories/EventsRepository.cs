@@ -15,14 +15,30 @@ public class EventsRepository : RepositoryBase<Event>, IEventsRepository
     public async Task<PagedList<Event>> GetAllEventsAsync(EventParameters eventParameters,
         bool trackChanges)
     {
-        var events = await FindAll(trackChanges)
+        var query = FindAll(trackChanges)            
             .OrderBy(e => e.Name)
             .Skip((eventParameters.PageNumber - 1) * eventParameters.PageSize)
-            .Take(eventParameters.PageSize)
-            .ToListAsync();
+            .Take(eventParameters.PageSize);
 
-        return new PagedList<Event>(events, events.Count, 
-            eventParameters.PageNumber, eventParameters.PageSize);
+        if (eventParameters.StartDate.HasValue)
+        {
+            query = query.Where(e => e.StartDate.Equals(eventParameters.StartDate.Value));
+        }
+        
+        if (!string.IsNullOrEmpty(eventParameters.Location))
+        {
+            query = query.Where(e => e.Location == eventParameters.Location);
+        }
+
+        if (eventParameters.Category.HasValue)
+        {
+            query = query.Where(e => e.Category == eventParameters.Category.Value);
+        }
+
+        var events = await query.ToListAsync();
+        var totalCount = await query.CountAsync();
+
+        return new PagedList<Event>(events, totalCount, eventParameters.PageNumber, eventParameters.PageSize);
     }
         
     public async Task<Event> GetEventByIdAsync(Guid eventId, bool trackChanges) =>

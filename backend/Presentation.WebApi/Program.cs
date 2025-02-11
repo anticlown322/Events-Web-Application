@@ -11,11 +11,16 @@ var builder = WebApplication.CreateBuilder(args);
     LogManager.Setup().LoadConfigurationFromFile(string.Concat(Directory.GetCurrentDirectory(), "/Logs/nlog.config"));
     builder.Services.ConfigureLoggerService();
 
+    builder.Services.ConfigureCors();
     builder.Services.ConfigureRepositoryManager();
     builder.Services.ConfigureServiceManager();
     builder.Services.ConfigureSqlContext(builder.Configuration); 
     builder.Services.ConfigureAutoMapper();
-    builder.Services.ConfigureCors();
+    
+    builder.Services.AddAuthentication();
+    builder.Services.ConfigureIdentity();
+    builder.Services.ConfigureJwt(builder.Configuration);
+    builder.Services.AddAuthorizationPolicies();
     
     builder.Services.AddControllers()
         .AddApplicationPart(typeof(Presentation.Core.AssemblyReference).Assembly);
@@ -30,13 +35,16 @@ var app = builder.Build();
     var logger = app.Services.GetRequiredService<ILoggerManager>();
     app.ConfigureExceptionHandler(logger);
     
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseCors("CorsPolicy");
+    
+    app.UseAuthentication();
+    app.UseAuthorization();
     
     app.UseHttpsRedirection();
     app.MapControllers();
     
-    app.UseAuthorization();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.Run();

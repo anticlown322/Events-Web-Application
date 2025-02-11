@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DTO.Events;
@@ -17,6 +18,7 @@ public class ParticipantsController : ControllerBase
     public ParticipantsController(IServiceManager service) => _service = service;
     
     [HttpGet]
+    [Authorize(Policy= "AdminOnly")]
     public async Task<IActionResult> GetParticipantsForEvent(Guid eventId, 
         [FromQuery] ParticipantParameters participantParameters)
     {
@@ -29,6 +31,7 @@ public class ParticipantsController : ControllerBase
     }
 
     [HttpGet("{id:guid}", Name = "GetParticipantForEvent")]
+    [Authorize(Policy= "AdminOnly")]
     public async Task<IActionResult> GetParticipantForEvent(Guid eventId, Guid id)
     {
         var participant = await _service.ParticipantService.GetParticipantByIdAsync(eventId, id, trackChanges: false);
@@ -36,6 +39,7 @@ public class ParticipantsController : ControllerBase
     }
     
     [HttpPost]
+    [Authorize(Policy= "AdminOnly")]
     public async Task<IActionResult> CreateParticipantForEvent(Guid eventId, [FromBody] ParticipantForCreationDto participant)
     {
         if (participant is null)
@@ -48,6 +52,7 @@ public class ParticipantsController : ControllerBase
     }
     
     [HttpDelete("{id:guid}")]
+    [Authorize(Policy= "AdminOnly")]
     public async Task<IActionResult> DeleteParticipantForEvent(Guid eventId, Guid id)
     {
         await _service.ParticipantService.DeleteParticipantAsync(eventId, id, trackChanges: false);
