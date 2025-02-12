@@ -10,12 +10,18 @@ public class EventMappingProfile : Profile
     {
         CreateMap<Event, EventDto>()
             .ForMember(dest => dest.StartDate,
-                opts => opts.MapFrom(src => src.StartDate.ToString("g")));
+                opts => opts.MapFrom(src => src.StartDate.ToString("g")))
+            .ForMember(dest => dest.ImageUrl,
+                opts => opts
+                    .MapFrom(src => src.Image));
 
         CreateMap<EventForCreationDto, Event>()
             .ForMember(dest => dest.StartDate,
                 opts => opts
-                    .MapFrom(src => DateTime.Parse(src.StartDate).ToUniversalTime()));
+                    .MapFrom(src => DateTime.Parse(src.StartDate).ToUniversalTime()))
+            .ForMember(dest => dest.Image,
+                opts => opts
+                    .MapFrom(src => src.Image)) ;
         
         CreateMap<EventForUpdateDto, Event>()
             .ForMember(dest => dest.StartDate,

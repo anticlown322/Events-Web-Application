@@ -38,6 +38,11 @@ public class EventCreationDtoValidator : AbstractValidator<EventForCreationDto>
             .NotEmpty()
             .WithMessage(c => ValidationUtils.EmptyParamMessage(nameof(c.Category)));
         
+        RuleFor(c => c.MaxParticipants)
+            .NotEmpty()
+            .Must(e => e >= 0)
+            .WithMessage("Max participants value cannot be negative.");
+        
         RuleFor(c => c.Image)
             .Must(HaveValidImageExtension!)
             .When(c => c.Image != null)

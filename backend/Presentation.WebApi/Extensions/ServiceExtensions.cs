@@ -12,6 +12,7 @@ using Service.Contracts;
 using Service.Contracts.UseCases.Authentication;
 using Service.Contracts.UseCases.Event;
 using Service.Contracts.UseCases.Participant;
+using Service.Services;
 using Service.UseCases.UseCases.Authentication;
 using Service.UseCases.UseCases.Event;
 using Service.UseCases.UseCases.Participant;
@@ -37,6 +38,9 @@ public static class ServiceExtensions
     public static void ConfigureAuthenticationManager(this IServiceCollection services) =>
         services.AddScoped<IAuthenticationManager, Service.UseCases.AuthenticationManager>();
 
+    public static void ConfigureImageService(this IServiceCollection services) =>
+        services.AddScoped<IImageService, ImageService>();
+    
     public static void ConfigureUseCases(this IServiceCollection services)
     {
         #region Authentication use cases

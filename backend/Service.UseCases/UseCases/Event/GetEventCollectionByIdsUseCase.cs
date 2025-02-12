@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Domain.Contracts;
 using Domain.Entities.Exceptions;
+using Domain.Entities.Models;
+using Service.Contracts;
 using Service.Contracts.UseCases.Event;
 using Shared.DTO.Events;
 

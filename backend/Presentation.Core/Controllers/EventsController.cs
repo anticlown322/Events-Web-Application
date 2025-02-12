@@ -11,7 +11,7 @@ using Shared.Validators;
 
 namespace Presentation.Core.Controllers;
 
-[Route("api/[controller]")]
+[Route("api/events")]
 [ApiController]
 public class EventsController(
     IGetEventsUseCase getEventsUseCase,
@@ -23,7 +23,6 @@ public class EventsController(
     IUpdateEventUseCase updateEventUseCase)
     : ControllerBase
 {
-    
     [HttpGet]
     [Authorize(Policy= "AdminOrParticipant")]
     public async Task<IActionResult> GetEvents([FromQuery] EventParameters eventParameters)
@@ -40,7 +39,9 @@ public class EventsController(
     [Authorize(Policy= "AdminOrParticipant")]
     public async Task<IActionResult> GetEventById(Guid id)
     {
-        var eventToGet = await getEventByIdUseCase.ExecuteAsync(id, trackChanges: false);
+        var eventToGet = await getEventByIdUseCase
+            .ExecuteAsync(id, trackChanges: false);
+        
         return Ok(eventToGet);
     }
     
@@ -48,13 +49,16 @@ public class EventsController(
     [Authorize(Policy= "AdminOrParticipant")]
     public async Task<IActionResult> GetEventByName(string name)
     {
-        var eventToGet = await getEventByNameUseCase.ExecuteAsync(name, trackChanges: false);
+        var eventToGet = await getEventByNameUseCase
+            .ExecuteAsync(name, trackChanges: false);
+        
         return Ok(eventToGet);
     }
     
     [HttpGet("collection/({ids})", Name = "EventCollection")]
     [Authorize(Policy= "AdminOrParticipant")]
-    public async Task<IActionResult> GetEventCollection([ModelBinder(BinderType = typeof(ArrayModelBinder))]IEnumerable<Guid> ids)
+    public async Task<IActionResult> GetEventCollection(
+        [ModelBinder(BinderType = typeof(ArrayModelBinder))]IEnumerable<Guid> ids)
     {
         var events = await getEventCollectionByIdsUseCase
             .ExecuteAsync(ids, trackChanges: false);
@@ -65,11 +69,8 @@ public class EventsController(
     [HttpPost]
     [Authorize(Policy= "AdminOnly")]
     [ValidationFilter<EventForCreationDto>]
-    public async Task<IActionResult> CreateEvent([FromBody] EventForCreationDto eventToCreate)
+    public async Task<IActionResult> CreateEvent([FromForm] EventForCreationDto eventToCreate)
     {
-        if (eventToCreate is null)
-            return BadRequest("EventForCreationDto object is null");
-        
         var createdEvent = await createEventUseCase.ExecuteAsync(eventToCreate);
         return CreatedAtRoute("EventById", new { id = createdEvent.Id }, createdEvent);
     }
@@ -87,9 +88,6 @@ public class EventsController(
     [ValidationFilter<EventForUpdateDto>]
     public async Task<IActionResult> UpdateEvent(Guid id, [FromBody] EventForUpdateDto eventForUpdate)
     {
-        if (eventForUpdate is null)
-            return BadRequest("EventForUpdateDto object is null");
-        
         await updateEventUseCase.ExecuteAsync(id, eventForUpdate, trackChanges: true);
         return NoContent();
     }

@@ -18,8 +18,8 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.ConfigureJwt(builder.Configuration);
     builder.Services.AddAuthorizationPolicies();
     
-    builder.Services.AddScoped<IAuthenticationManager, Service.UseCases.AuthenticationManager>();
-    // builder.Services.ConfigureAuthenticationManager();
+    builder.Services.ConfigureAuthenticationManager();
+    builder.Services.ConfigureImageService();
     builder.Services.ConfigureUseCases();
     builder.Services.AddValidators();
     

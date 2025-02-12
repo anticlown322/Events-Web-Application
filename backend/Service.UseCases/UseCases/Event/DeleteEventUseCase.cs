@@ -1,19 +1,27 @@
 ﻿using Domain.Contracts;
 using Domain.Entities.Exceptions;
+using Service.Contracts;
 using Service.Contracts.UseCases.Event;
 
 namespace Service.UseCases.UseCases.Event;
 
 public class DeleteEventUseCase(
-    IRepositoryManager repository) : IDeleteEventUseCase
+    IRepositoryManager repository,
+    IImageService imageService) : IDeleteEventUseCase
 {
     public async Task ExecuteAsync(Guid eventId, bool trackChanges)
     {
-        var eventToGet = await repository.Event.GetEventByIdAsync(eventId, trackChanges);
-        if (eventToGet is null)
+        var eventToDelete = await repository.Event.GetEventByIdAsync(eventId, trackChanges);
+        if (eventToDelete is null)
             throw new EventNotFoundByIdException(eventId);
 
-        repository.Event.DeleteEvent(eventToGet);
+        var filename = eventToDelete.Image;
+        if (filename != null)
+        {
+            imageService.DeleteFile(filename);
+        }
+        
+        repository.Event.DeleteEvent(eventToDelete);
         await repository.SaveAsync();
     }
 }

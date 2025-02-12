@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Domain.Contracts;
 using Domain.Entities.Exceptions;
+using Domain.Entities.Models;
+using Service.Contracts;
 using Service.Contracts.UseCases.Event;
 using Shared.DTO.Events;
 
@@ -15,7 +17,7 @@ public class GetEventByNameUseCase(
         var eventToGet = await repository.Event.GetEventByNameAsync(name, trackChanges);
         if (eventToGet is null)
             throw new EventNotFoundByNameException(name);
-
+        
         var eventDto = mapper.Map<EventDto>(eventToGet);
         return eventDto;
     }
