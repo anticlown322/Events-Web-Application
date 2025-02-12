@@ -1,10 +1,7 @@
 using Domain.Contracts;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Formatters;
-using Microsoft.Extensions.Options;
 using Presentation.WebApi.Extensions;
 using NLog;
-using Shared.DTO.Events;
+using Service.Contracts;
 
 var builder = WebApplication.CreateBuilder(args);
 {
@@ -13,15 +10,18 @@ var builder = WebApplication.CreateBuilder(args);
 
     builder.Services.ConfigureCors();
     builder.Services.ConfigureRepositoryManager();
-    builder.Services.ConfigureServiceManager();
     builder.Services.ConfigureSqlContext(builder.Configuration); 
     builder.Services.ConfigureAutoMapper();
-    builder.Services.AddValidators();
     
     builder.Services.AddAuthentication();
     builder.Services.ConfigureIdentity();
     builder.Services.ConfigureJwt(builder.Configuration);
     builder.Services.AddAuthorizationPolicies();
+    
+    builder.Services.AddScoped<IAuthenticationManager, Service.UseCases.AuthenticationManager>();
+    // builder.Services.ConfigureAuthenticationManager();
+    builder.Services.ConfigureUseCases();
+    builder.Services.AddValidators();
     
     builder.Services.AddControllers()
         .AddApplicationPart(typeof(Presentation.Core.AssemblyReference).Assembly);
@@ -37,6 +37,7 @@ var app = builder.Build();
     app.ConfigureExceptionHandler(logger);
     
     app.UseCors("CorsPolicy");
+    app.UseStaticFiles();
     
     app.UseAuthentication();
     app.UseAuthorization();

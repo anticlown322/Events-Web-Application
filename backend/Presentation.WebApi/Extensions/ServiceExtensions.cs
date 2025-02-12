@@ -9,13 +9,17 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Service.Contracts;
-using Service.Services;
+using Service.Contracts.UseCases.Authentication;
+using Service.Contracts.UseCases.Event;
+using Service.Contracts.UseCases.Participant;
+using Service.UseCases.UseCases.Authentication;
+using Service.UseCases.UseCases.Event;
+using Service.UseCases.UseCases.Participant;
 using Shared.DTO.Events;
 using Shared.DTO.MappingProfiles;
 using Shared.DTO.Participants;
 using Shared.DTO.User;
 using Shared.Logger;
-using Shared.Validators;
 using Shared.Validators.Event;
 using Shared.Validators.Participant;
 using Shared.Validators.User;
@@ -29,9 +33,42 @@ public static class ServiceExtensions
 
     public static void ConfigureRepositoryManager(this IServiceCollection services) =>
         services.AddScoped<IRepositoryManager, RepositoryManager>();
+    
+    public static void ConfigureAuthenticationManager(this IServiceCollection services) =>
+        services.AddScoped<IAuthenticationManager, Service.UseCases.AuthenticationManager>();
 
-    public static void ConfigureServiceManager(this IServiceCollection services) =>
-        services.AddScoped<IServiceManager, ServiceManager>();
+    public static void ConfigureUseCases(this IServiceCollection services)
+    {
+        #region Authentication use cases
+
+        services.AddScoped<IRegisterUserUseCase, RegisterUserUseCase>();
+        services.AddScoped<ICreateTokenForAuthUseCase, CreateTokenForAuthUseCase>();
+        services.AddScoped<IRefreshTokenForAuthUseCase, RefreshTokenForAuthUseCase>();
+        services.AddScoped<IValidateUserUseCase, ValidateUserUseCase>();
+
+        #endregion
+
+        #region Event use cases
+
+        services.AddScoped<ICreateEventUseCase, CreateEventUseCase>();
+        services.AddScoped<IDeleteEventUseCase, DeleteEventUseCase>();
+        services.AddScoped<IGetEventByIdUseCase, GetEventByIdUseCase>();
+        services.AddScoped<IGetEventByNameUseCase, GetEventByNameUseCase>();
+        services.AddScoped<IGetEventCollectionByIdsUseCase, GetEventCollectionByIdsUseCase>();
+        services.AddScoped<IGetEventsUseCase, GetEventsUseCase>();
+        services.AddScoped<IUpdateEventUseCase, UpdateEventUseCase>();
+        
+        #endregion
+
+        #region Participant use cases
+
+        services.AddScoped<ICreateParticipantUseCase, CreateParticipantUseCase>();
+        services.AddScoped<IDeleteParticipantUseCase, DeleteParticipantUseCase>();
+        services.AddScoped<IGetParticipantByIdUseCase, GetParticipantByIdUseCase>();
+        services.AddScoped<IGetParticipantsUseCase, GetParticipantsUseCase>();
+        
+        #endregion
+    }
 
     public static void ConfigureSqlContext(this IServiceCollection services,
         IConfiguration configuration) =>
@@ -98,29 +135,29 @@ public static class ServiceExtensions
                 };
             });
     }
-    
+
     public static void AddAuthorizationPolicies(this IServiceCollection services) =>
         services.AddAuthorization(options =>
         {
             options.AddPolicy("AdminOnly", policy =>
-                policy.RequireRole("Administrator")); 
-            
+                policy.RequireRole("Administrator"));
+
             options.AddPolicy("ParticipantOnly", policy =>
-                policy.RequireRole("Participant")); 
-            
+                policy.RequireRole("Participant"));
+
             options.AddPolicy("AdminOrParticipant", policy =>
                 policy.RequireRole("Administrator", "Participant"));
         });
-    
+
     public static void AddValidators(this IServiceCollection services)
     {
         services.AddTransient<IValidator<Event>, EventValidator>();
         services.AddTransient<IValidator<EventForCreationDto>, EventCreationDtoValidator>();
         services.AddTransient<IValidator<EventForUpdateDto>, EventUpdateDtoValidator>();
-        
+
         services.AddTransient<IValidator<Participant>, ParticipantValidator>();
         services.AddTransient<IValidator<ParticipantForCreationDto>, ParticipantCreationDtoValidator>();
-        
+
         services.AddTransient<IValidator<User>, UserValidator>();
         services.AddTransient<IValidator<UserForRegistrationDto>, UserRegistrationDtoValidator>();
         services.AddTransient<IValidator<UserForAuthenticationDto>, UserAuthenticationDtoValidator>();

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Core.ModelBinders;
 using Service.Contracts;
+using Service.Contracts.UseCases.Event;
 using Shared.DTO.Events;
 using Shared.RequestFeatures;
 using Shared.Validators;
@@ -12,17 +13,23 @@ namespace Presentation.Core.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class EventsController(IServiceManager service, ILoggerManager logger) : ControllerBase
+public class EventsController(
+    IGetEventsUseCase getEventsUseCase,
+    IGetEventByIdUseCase getEventByIdUseCase,
+    IGetEventByNameUseCase getEventByNameUseCase,
+    IGetEventCollectionByIdsUseCase getEventCollectionByIdsUseCase,
+    ICreateEventUseCase createEventUseCase,
+    IDeleteEventUseCase deleteEventUseCase,
+    IUpdateEventUseCase updateEventUseCase)
+    : ControllerBase
 {
-    private readonly IServiceManager _service = service;
-    private ILoggerManager _logger = logger;
-
+    
     [HttpGet]
     [Authorize(Policy= "AdminOrParticipant")]
     public async Task<IActionResult> GetEvents([FromQuery] EventParameters eventParameters)
     {
-        var pagedResult = await _service.EventService
-            .GetAllEventsAsync(eventParameters, trackChanges: false);
+        var pagedResult = await getEventsUseCase
+            .ExecuteAsync(eventParameters, trackChanges: false);
         
         Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(pagedResult.metaData));
 
@@ -33,7 +40,7 @@ public class EventsController(IServiceManager service, ILoggerManager logger) : 
     [Authorize(Policy= "AdminOrParticipant")]
     public async Task<IActionResult> GetEventById(Guid id)
     {
-        var eventToGet = await _service.EventService.GetEventByIdAsync(id, trackChanges: false);
+        var eventToGet = await getEventByIdUseCase.ExecuteAsync(id, trackChanges: false);
         return Ok(eventToGet);
     }
     
@@ -41,7 +48,7 @@ public class EventsController(IServiceManager service, ILoggerManager logger) : 
     [Authorize(Policy= "AdminOrParticipant")]
     public async Task<IActionResult> GetEventByName(string name)
     {
-        var eventToGet = await _service.EventService.GetEventByNameAsync(name, trackChanges: false);
+        var eventToGet = await getEventByNameUseCase.ExecuteAsync(name, trackChanges: false);
         return Ok(eventToGet);
     }
     
@@ -49,7 +56,9 @@ public class EventsController(IServiceManager service, ILoggerManager logger) : 
     [Authorize(Policy= "AdminOrParticipant")]
     public async Task<IActionResult> GetEventCollection([ModelBinder(BinderType = typeof(ArrayModelBinder))]IEnumerable<Guid> ids)
     {
-        var events = await _service.EventService.GetEventsByIdsAsync(ids, trackChanges: false);
+        var events = await getEventCollectionByIdsUseCase
+            .ExecuteAsync(ids, trackChanges: false);
+        
         return Ok(events);
     }
     
@@ -61,7 +70,7 @@ public class EventsController(IServiceManager service, ILoggerManager logger) : 
         if (eventToCreate is null)
             return BadRequest("EventForCreationDto object is null");
         
-        var createdEvent = await _service.EventService.CreateEventAsync(eventToCreate);
+        var createdEvent = await createEventUseCase.ExecuteAsync(eventToCreate);
         return CreatedAtRoute("EventById", new { id = createdEvent.Id }, createdEvent);
     }
     
@@ -69,7 +78,7 @@ public class EventsController(IServiceManager service, ILoggerManager logger) : 
     [Authorize(Policy= "AdminOnly")]
     public async Task<IActionResult> DeleteEvent(Guid id)
     {
-        await _service.EventService.DeleteEventAsync(id, trackChanges: false);
+        await deleteEventUseCase.ExecuteAsync(id, trackChanges: false);
         return NoContent();
     }
     
@@ -81,7 +90,7 @@ public class EventsController(IServiceManager service, ILoggerManager logger) : 
         if (eventForUpdate is null)
             return BadRequest("EventForUpdateDto object is null");
         
-        await _service.EventService.UpdateEventAsync(id, eventForUpdate, trackChanges: true);
+        await updateEventUseCase.ExecuteAsync(id, eventForUpdate, trackChanges: true);
         return NoContent();
     }
 }

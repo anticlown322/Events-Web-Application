@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
+using Service.Contracts.UseCases.Participant;
 using Shared.DTO.Events;
 using Shared.DTO.Participants;
 using Shared.RequestFeatures;
@@ -12,19 +13,20 @@ namespace Presentation.Core.Controllers;
 [Route("api/events/{eventId}/participants")]
 
 [ApiController]
-public class ParticipantsController : ControllerBase
+public class ParticipantsController(
+    ICreateParticipantUseCase createParticipantUseCase,
+    IDeleteParticipantUseCase deleteParticipantUseCase,
+    IGetParticipantByIdUseCase getParticipantByIdUseCase,
+    IGetParticipantsUseCase getParticipantsUseCase)
+    : ControllerBase
 {
-    private readonly IServiceManager _service;
-    
-    public ParticipantsController(IServiceManager service) => _service = service;
-    
     [HttpGet]
     [Authorize(Policy= "AdminOnly")]
     public async Task<IActionResult> GetParticipantsForEvent(Guid eventId, 
         [FromQuery] ParticipantParameters participantParameters)
     {
-        var pagedResult = await _service.ParticipantService
-            .GetParticipantsAsync(eventId, participantParameters, trackChanges: false);
+        var pagedResult = await getParticipantsUseCase
+            .ExecuteAsync(eventId, participantParameters, trackChanges: false);
         
         Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(pagedResult.metaData));
         
@@ -35,7 +37,7 @@ public class ParticipantsController : ControllerBase
     [Authorize(Policy= "AdminOnly")]
     public async Task<IActionResult> GetParticipantForEvent(Guid eventId, Guid id)
     {
-        var participant = await _service.ParticipantService.GetParticipantByIdAsync(eventId, id, trackChanges: false);
+        var participant = await getParticipantByIdUseCase.ExecuteAsync(eventId, id, trackChanges: false);
         return Ok(participant);
     }
     
@@ -47,8 +49,8 @@ public class ParticipantsController : ControllerBase
         if (participant is null)
             return BadRequest("ParticipantForCreationDto object is null");
         
-        var registrationResult = await _service.ParticipantService
-            .CreateParticipantAsync(eventId, participant, trackChanges: false);
+        var registrationResult = await createParticipantUseCase
+            .ExecuteAsync(eventId, participant, trackChanges: false);
 
         return Ok(registrationResult);
     }
@@ -57,7 +59,7 @@ public class ParticipantsController : ControllerBase
     [Authorize(Policy= "AdminOnly")]
     public async Task<IActionResult> DeleteParticipantForEvent(Guid eventId, Guid id)
     {
-        await _service.ParticipantService.DeleteParticipantAsync(eventId, id, trackChanges: false);
+        await deleteParticipantUseCase.ExecuteAsync(eventId, id, trackChanges: false);
         return NoContent();
     }
 
