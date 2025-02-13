@@ -19,16 +19,20 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Domain.Repository\Domain.Repository.csproj" />
+      <ProjectReference Include="..\Infrastructure.Repository\Infrastructure.Repository.csproj" />
       <ProjectReference Include="..\Presentation.Core\Presentation.Core.csproj" />
-      <ProjectReference Include="..\Service.Contracts\Service.Contracts.csproj" />
-      <ProjectReference Include="..\Service.UseCases\Service.UseCases.csproj" />
-      <ProjectReference Include="..\Shared.Logger\Shared.Logger.csproj" />
-      <ProjectReference Include="..\Shared.Validators\Shared.Validators.csproj" />
+      <ProjectReference Include="..\Application.Contracts\Application.Contracts.csproj" />
+      <ProjectReference Include="..\Application.UseCases\Application.UseCases.csproj" />
+      <ProjectReference Include="..\Infrastructure.Logger\Infrastructure.Logger.csproj" />
+      <ProjectReference Include="..\Application.Validators\Application.Validators.csproj" />
     </ItemGroup>
 
     <ItemGroup>
       <Folder Include="wwwroot\images\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Logs\nlog.config" />
     </ItemGroup>
 
 </Project>

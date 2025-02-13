@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Service.Contracts;
-using Service.Contracts.UseCases.Authentication;
+using Application.Contracts;
+using Application.Contracts.UseCases.Authentication;
 using Shared.DTO.User;
 
 namespace Presentation.Core.Controllers;

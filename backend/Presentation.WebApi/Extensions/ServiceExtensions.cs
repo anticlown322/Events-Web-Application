@@ -1,30 +1,30 @@
 ﻿using System.Text;
+using Application.Contracts;
+using Application.Contracts.UseCases.Authentication;
+using Application.Contracts.UseCases.Event;
+using Application.Contracts.UseCases.Participant;
+using Application.DTO.Events;
+using Application.DTO.MappingProfiles;
+using Application.DTO.Participants;
+using Application.UseCases;
+using Application.UseCases.UseCases.Authentication;
+using Application.UseCases.UseCases.Event;
+using Application.UseCases.UseCases.Participant;
+using Application.Validators.Event;
+using Application.Validators.Participant;
+using Application.Validators.User;
 using Domain.Contracts;
 using Domain.Entities.Models;
 using Domain.Repository;
 using FluentValidation;
+using Infrastructure.Logger;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Service.Contracts;
-using Service.Contracts.UseCases.Authentication;
-using Service.Contracts.UseCases.Event;
-using Service.Contracts.UseCases.Participant;
-using Service.Services;
-using Service.UseCases.UseCases.Authentication;
-using Service.UseCases.UseCases.Event;
-using Service.UseCases.UseCases.Participant;
-using Shared.DTO.Events;
-using Shared.DTO.MappingProfiles;
-using Shared.DTO.Participants;
 using Shared.DTO.User;
-using Shared.Logger;
-using Shared.Validators.Event;
-using Shared.Validators.Participant;
-using Shared.Validators.User;
 
 namespace Presentation.WebApi.Extensions;
 
@@ -37,7 +37,7 @@ public static class ServiceExtensions
         services.AddScoped<IRepositoryManager, RepositoryManager>();
     
     public static void ConfigureAuthenticationManager(this IServiceCollection services) =>
-        services.AddScoped<IAuthenticationManager, Service.UseCases.AuthenticationManager>();
+        services.AddScoped<IAuthenticationManager, AuthenticationManager>();
 
     public static void ConfigureImageService(this IServiceCollection services) =>
         services.AddScoped<IImageService, ImageService>();

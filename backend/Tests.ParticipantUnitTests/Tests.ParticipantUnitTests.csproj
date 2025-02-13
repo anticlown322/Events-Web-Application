@@ -24,9 +24,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Domain.Repository\Domain.Repository.csproj" />
-      <ProjectReference Include="..\Service.UseCases\Service.UseCases.csproj" />
-      <ProjectReference Include="..\Shared.DTO\Shared.DTO.csproj" />
+      <ProjectReference Include="..\Infrastructure.Repository\Infrastructure.Repository.csproj" />
+      <ProjectReference Include="..\Application.UseCases\Application.UseCases.csproj" />
+      <ProjectReference Include="..\Application.DTO\Application.DTO.csproj" />
     </ItemGroup>
 
 </Project>

@@ -1,11 +1,15 @@
+using System.Reflection;
 using Domain.Contracts;
 using Presentation.WebApi.Extensions;
 using NLog;
-using Service.Contracts;
+using Application.Contracts;
 
 var builder = WebApplication.CreateBuilder(args);
 {
-    LogManager.Setup().LoadConfigurationFromFile(string.Concat(Directory.GetCurrentDirectory(), "/Logs/nlog.config"));
+    var assemblyDirectory = Path.GetDirectoryName(
+        Assembly.GetAssembly(typeof(Infrastructure.Logger.AssemblyReference)).Location);
+    var configFilePath = Path.Combine(assemblyDirectory, "Logs", "nlog.config");
+    LogManager.Setup().LoadConfigurationFromFile(configFilePath);
     builder.Services.ConfigureLoggerService();
 
     builder.Services.ConfigureCors();

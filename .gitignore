@@ -47,5 +47,4 @@ Desktop.ini
 
 # Logs
 *.log
-logs/
 internal_logs/

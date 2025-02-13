@@ -1,7 +1,7 @@
 ﻿using System.Net;
+using Application.Exceptions.Base;
 using Domain.Contracts;
 using Domain.Entities.ErrorModel;
-using Domain.Entities.Exceptions;
 using Microsoft.AspNetCore.Diagnostics;
 
 namespace Presentation.WebApi.Extensions;

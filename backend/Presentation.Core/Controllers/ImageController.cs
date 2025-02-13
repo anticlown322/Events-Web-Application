@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Service.Contracts;
+using Application.Contracts;
 
 namespace Presentation.Core.Controllers;
 

@@ -2,13 +2,12 @@
 using Domain.Contracts;
 using Domain.Entities.Models;
 using Domain.Repository;
-using Domain.Repository.Repositories;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Moq;
-using Service.UseCases.UseCases.Participant;
-using Shared.DTO.Participants;
-using Shared.RequestFeatures;
+using Application.UseCases.UseCases.Participant;
+using Application.DTO.Participants;
+using Infrastructure.RequestFeatures;
 
 namespace Tests.ParticipantUnitTests;
 

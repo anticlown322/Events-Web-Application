@@ -1,12 +1,12 @@
 ﻿using System.Text.Json;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Service.Contracts;
-using Service.Contracts.UseCases.Participant;
-using Shared.DTO.Events;
-using Shared.DTO.Participants;
-using Shared.RequestFeatures;
-using Shared.Validators;
+using Application.Contracts;
+using Application.Contracts.UseCases.Participant;
+using Application.DTO.Events;
+using Application.DTO.Participants;
+using Infrastructure.RequestFeatures;
+using Application.Validators;
 
 namespace Presentation.Core.Controllers;
 

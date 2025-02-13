@@ -8,7 +8,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Domain.Entities\Domain.Entities.csproj" />
-      <ProjectReference Include="..\Shared.RequestFeatures\Shared.RequestFeatures.csproj" />
+      <ProjectReference Include="..\Infrastructure.RequestFeatures\Infrastructure.RequestFeatures.csproj" />
     </ItemGroup>
 
 </Project>

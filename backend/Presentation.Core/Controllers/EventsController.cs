@@ -3,11 +3,11 @@ using Domain.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Core.ModelBinders;
-using Service.Contracts;
-using Service.Contracts.UseCases.Event;
-using Shared.DTO.Events;
-using Shared.RequestFeatures;
-using Shared.Validators;
+using Application.Contracts;
+using Application.Contracts.UseCases.Event;
+using Application.DTO.Events;
+using Infrastructure.RequestFeatures;
+using Application.Validators;
 
 namespace Presentation.Core.Controllers;
 

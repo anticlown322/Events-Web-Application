@@ -1,5 +1,5 @@
 ﻿using Domain.Entities.Models;
-using Shared.RequestFeatures;
+using Infrastructure.RequestFeatures;
 
 namespace Domain.Contracts;
 
