@@ -1,7 +1,7 @@
 ﻿using Domain.Contracts;
 using Domain.Repository.Repositories;
 
-namespace Domain.Repository;
+namespace Infrastructure.Repository;
 
 public sealed class RepositoryManager : IRepositoryManager
 {

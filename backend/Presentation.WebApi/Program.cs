@@ -3,6 +3,9 @@ using Domain.Contracts;
 using Presentation.WebApi.Extensions;
 using NLog;
 using Application.Contracts;
+using Domain.Repository;
+using Infrastructure.Repository;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 {
@@ -37,6 +40,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 var app = builder.Build();
 {
+    AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+    using (var scope = app.Services.CreateScope())
+    {
+        var dbContext = scope.ServiceProvider.GetRequiredService<RepositoryContext>();
+        dbContext.Database.Migrate();
+    }
+    
     var logger = app.Services.GetRequiredService<ILoggerManager>();
     app.ConfigureExceptionHandler(logger);
     

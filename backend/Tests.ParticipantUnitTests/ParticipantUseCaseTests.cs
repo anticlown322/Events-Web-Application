@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Moq;
 using Application.UseCases.UseCases.Participant;
 using Application.DTO.Participants;
+using Infrastructure.Repository;
 using Infrastructure.RequestFeatures;
 
 namespace Tests.ParticipantUnitTests;

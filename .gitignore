@@ -33,6 +33,7 @@ _UpgradeReport_Files/
 images/
 global.json
 Migrations/
+publish/
 
 # OS-specific
 Thumbs.db

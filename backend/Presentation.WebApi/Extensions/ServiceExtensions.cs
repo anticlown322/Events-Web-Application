@@ -18,6 +18,7 @@ using Domain.Entities.Models;
 using Domain.Repository;
 using FluentValidation;
 using Infrastructure.Logger;
+using Infrastructure.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -76,9 +77,13 @@ public static class ServiceExtensions
     }
 
     public static void ConfigureSqlContext(this IServiceCollection services,
-        IConfiguration configuration) =>
+        IConfiguration configuration)
+    {
         services.AddDbContext<RepositoryContext>(opts =>
-            opts.UseSqlServer(configuration.GetConnectionString("sqlConnection")));
+            opts.UseNpgsql(configuration.GetConnectionString("sqlConnection"), b => 
+                b.MigrationsAssembly("Presentation.WebApi")));
+    }
+
 
     public static void ConfigureAutoMapper(this IServiceCollection services)
     {

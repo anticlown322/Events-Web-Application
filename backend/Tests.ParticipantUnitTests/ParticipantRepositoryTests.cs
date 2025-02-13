@@ -2,6 +2,7 @@ using Domain.Entities.Models;
 using Domain.Repository;
 using Domain.Repository.Repositories;
 using FluentAssertions;
+using Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
 
 namespace Tests.ParticipantUnitTests;

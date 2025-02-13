@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
-namespace Domain.Repository;
+namespace Infrastructure.Repository;
 
 public class RepositoryContext : IdentityDbContext<User>
 {

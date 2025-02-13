@@ -1,5 +1,6 @@
 ﻿using Domain.Contracts;
 using Domain.Entities.Models;
+using Infrastructure.Repository;
 using Infrastructure.RequestFeatures;
 using Microsoft.EntityFrameworkCore;
 

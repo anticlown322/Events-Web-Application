@@ -34,12 +34,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.UseCases", "App
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.ParticipantUnitTests", "Tests.ParticipantUnitTests\Tests.ParticipantUnitTests.csproj", "{50E17D73-72C5-4762-8FAF-ECA534325EB4}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Items", "Items", "{38C48591-8212-4175-BDEB-476638A309AA}"
-	ProjectSection(SolutionItems) = preProject
-		Dockerfile = Dockerfile
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Exceptions", "Application.Exceptions\Application.Exceptions.csproj", "{D38AF27F-A542-495E-A569-1C80C51097C5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0256EFB3-E537-4E5B-827F-7869785FBEF2}"
+	ProjectSection(SolutionItems) = preProject
+		compose.yaml = compose.yaml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
