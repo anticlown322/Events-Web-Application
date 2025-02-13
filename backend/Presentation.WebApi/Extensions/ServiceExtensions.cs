@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Service.Contracts;
 using Service.Contracts.UseCases.Authentication;
 using Service.Contracts.UseCases.Event;
@@ -165,5 +166,39 @@ public static class ServiceExtensions
         services.AddTransient<IValidator<User>, UserValidator>();
         services.AddTransient<IValidator<UserForRegistrationDto>, UserRegistrationDtoValidator>();
         services.AddTransient<IValidator<UserForAuthenticationDto>, UserAuthenticationDtoValidator>();
+    }
+    
+    public static void ConfigureSwagger(this IServiceCollection services)
+    {
+        services.AddSwaggerGen(s =>
+        {
+            s.SwaggerDoc("v1", new OpenApiInfo
+            {
+                Title = "Event Web App API", Version = "v1"
+            });
+            s.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            {
+                In = ParameterLocation.Header,
+                Description = "Place to add JWT with Bearer",
+                Name = "Authorization",
+                Type = SecuritySchemeType.ApiKey,
+                Scheme = "Bearer"
+            });
+            s.AddSecurityRequirement(new OpenApiSecurityRequirement()
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        },
+                        Name = "Bearer",
+                    },
+                    new List<string>()
+                }
+            });
+        });
     }
 }

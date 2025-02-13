@@ -32,6 +32,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared.Validators", "Shared
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service.UseCases", "Service.UseCases\Service.UseCases.csproj", "{2A27FDEC-EB88-4F92-A0DF-99370E7C5EB7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.ParticipantUnitTests", "Tests.ParticipantUnitTests\Tests.ParticipantUnitTests.csproj", "{50E17D73-72C5-4762-8FAF-ECA534325EB4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,6 +51,7 @@ Global
 		{8ADE8B8C-4D0A-49B4-8A75-5C2379FA5B8E} = {DB81D7F5-E16A-40B7-AA2A-8AF6FEA376A0}
 		{4BF0DC03-368B-429B-BF94-A7D3478A7E6D} = {0EC06A3B-FEB7-40BF-8899-337F513BBD5A}
 		{2A27FDEC-EB88-4F92-A0DF-99370E7C5EB7} = {A7351363-2F8D-4472-B99C-29A0A5B993A4}
+		{50E17D73-72C5-4762-8FAF-ECA534325EB4} = {10990BAA-5CE4-451B-A487-3E432FFC0757}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{C2840E2A-E528-480B-B810-C18414D42F34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -95,5 +98,9 @@ Global
 		{2A27FDEC-EB88-4F92-A0DF-99370E7C5EB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2A27FDEC-EB88-4F92-A0DF-99370E7C5EB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2A27FDEC-EB88-4F92-A0DF-99370E7C5EB7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50E17D73-72C5-4762-8FAF-ECA534325EB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50E17D73-72C5-4762-8FAF-ECA534325EB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50E17D73-72C5-4762-8FAF-ECA534325EB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50E17D73-72C5-4762-8FAF-ECA534325EB4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

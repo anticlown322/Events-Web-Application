@@ -28,7 +28,7 @@ var builder = WebApplication.CreateBuilder(args);
     
     builder.Services.ConfigureApiBehaviorOptions();
     builder.Services.AddEndpointsApiExplorer();
-    builder.Services.AddSwaggerGen();
+    builder.Services.ConfigureSwagger();
 }
 
 var app = builder.Build();
@@ -46,7 +46,10 @@ var app = builder.Build();
     app.MapControllers();
     
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(s =>
+    {
+        s.SwaggerEndpoint("/swagger/v1/swagger.json", "Event Web App API");
+    });
 }
 
 app.Run();
