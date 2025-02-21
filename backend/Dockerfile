@@ -3,7 +3,7 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0-alpine AS build
 WORKDIR /app
 COPY . .
 
-WORKDIR /app/Presentation.WebApi
+WORKDIR /app/Presentation
 RUN dotnet publish -c Release -o /app/publish
 
 # state w/o build files
@@ -14,4 +14,4 @@ EXPOSE 50501
 WORKDIR /app
 COPY --from=build /app/publish .
 
-ENTRYPOINT ["dotnet", "Presentation.WebApi.dll"]
+ENTRYPOINT ["dotnet", "Presentation.dll"]

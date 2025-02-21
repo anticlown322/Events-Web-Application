@@ -32,7 +32,6 @@ _UpgradeReport_Files/
 # Other
 images/
 global.json
-Migrations/
 publish/
 
 # OS-specific

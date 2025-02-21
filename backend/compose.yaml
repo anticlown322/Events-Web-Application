@@ -1,18 +1,18 @@
 ﻿services:
-  presentation.webapi:
+  presentation:
     build:
       context: .
-      dockerfile: Presentation.WebApi/Dockerfile
-    ports: 
+      dockerfile: Presentation/Dockerfile
+    ports:
       - "8080:8080"
     container_name: events_web_app
-    depends_on: 
+    depends_on:
       - db
   db:
     image: postgres:latest
-    ports: 
-        - "5432:5432"
-    environment: 
+    ports:
+      - "5432:5432"
+    environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 1234
     volumes:
