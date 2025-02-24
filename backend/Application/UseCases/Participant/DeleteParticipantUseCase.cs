@@ -1,6 +1,6 @@
-﻿using Application.Contracts.RepositoryContracts;
-using Application.Contracts.UseCaseContracts.Participant;
+﻿using Application.Contracts.UseCaseContracts.Participant;
 using Application.Validation.Exceptions.Specific;
+using Domain.RepositoryContracts;
 
 namespace Application.UseCases.Participant;
 

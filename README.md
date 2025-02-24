@@ -232,3 +232,71 @@ public async Task<IdentityResult> ExecuteAsync(UserForRegistrationDto userForReg
 ```
 
 Теперь перед регистраций происходит поиск существующего пользователя с переданным `UserName`.
+
+## Fixes (edits by 24.02.2025)
+
+### *1. эндпоинт регистрации на событие возвращает ошибку {"StatusCode":500,"Message":"Object reference not set to an instance of an object."}*
+
+Исправлено, теперь при `POST`-запросе приходит ответ с кодом `200`:
+
+![Correct response for participant registration](/assets/img/edits_2_1.png)
+
+### *2. сервис работы с изображением должен отвечать только за запись/чтение изображения, в нем не должно быть обращений к репозиторию для получения события*
+
+Исправлено, обращение к БД перенесено `ImageService` из в `GetImageUseCase`.
+
+### *3. сервис работы с токеном не должен обращаться к базе данных, он должен отвечать только за генерацию и валидацию токенов*
+
+Исправлено, обращение к БД перенесено из `AuthenticationManager` в `RefreshTokenForAuthUseCase`.
+
+### *4. интерфейсы репозиториев должны находиться в домене*
+
+Исправлено, `RepositoryContracts` перенесены в сборку `Domain`.
+
+### *5. в методах репозитория не должно быть присваивания полей сущности (CreateParticipant)*
+
+Исправлено, теперь в `ParticipantsRepository` не присваиваются значения полям:
+```csharp
+public void CreateParticipant(Guid eventId, Participant participant) => Create(participant);
+```
+Присвоение перенесено в `CreateParticipantUseCase`:
+```csharp
+participantEntity.EventId = eventId;
+participantEntity.RegistrationTime = DateTime.UtcNow;
+```
+
+### *6. cancellation token не передается в методы ImageService*
+
+Исправлено, теперь ImageService не принимает cancellationToken ни в одном из методов:
+```csharp
+public interface IImageService
+{
+    Task<(byte[] fileBytes, string contentType, string filename)> GetImageAsync(string imageFileName);
+    
+    Task WriteFileAsync(IFormFile image);
+    void DeleteFile(string fileName);
+}
+```
+
+### *7. при регистрации на событие нет проверки, что пользователь с таким email еще не зарегистрирован на это событие*
+
+Исправлено, теперь в `CreateParticipantUseCase` происходит следующая проверка перед регистрацией:
+```csharp
+var isUniqueEmail = await repository.Participant
+    .IsUniqueEmailAsync(participantForCreation.Email, cancellationToken);
+
+if (!isUniqueEmail)
+    throw new EmailAlreadyRegisteredException(
+        eventId, participantForCreation.Email);
+```
+Метод реализован `IsUniqueEmailAsync` в `ParticipantsRepository` следующий образом:
+```csharp
+public async Task<bool> IsUniqueEmailAsync(string email, CancellationToken cancellationToken) =>
+    !await RepositoryContext.Participants
+        .AnyAsync(e => e.Email == email, cancellationToken);
+```
+
+### *8. миграции лучше перенести на слой Infrastructure*
+
+Исправлено, теперь миграции находятся в сборке `Infrastructure`, 
+для процесса миграции был создан класс `RepositoryContextFactory`.

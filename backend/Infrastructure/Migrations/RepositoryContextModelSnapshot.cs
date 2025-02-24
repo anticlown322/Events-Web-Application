@@ -8,7 +8,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace Presentation.Migrations
+namespace Infrastructure.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
     partial class RepositoryContextModelSnapshot : ModelSnapshot
@@ -30,30 +30,39 @@ namespace Presentation.Migrations
                         .HasColumnName("EventId");
 
                     b.Property<int>("Category")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("Category");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("character varying(255)")
+                        .HasColumnName("Description");
 
                     b.Property<string>("Image")
-                        .HasColumnType("text");
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)")
+                        .HasColumnName("Image");
 
                     b.Property<string>("Location")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("Location");
 
                     b.Property<int>("MaxParticipants")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("MaxParticipants");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("Name");
 
                     b.Property<DateTime>("StartDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("StartDate");
 
                     b.HasKey("Id");
 
@@ -68,12 +77,14 @@ namespace Presentation.Migrations
                         .HasColumnName("ParticipantId");
 
                     b.Property<DateOnly>("DateOfBirth")
-                        .HasColumnType("date");
+                        .HasColumnType("date")
+                        .HasColumnName("DateOfBirth");
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(320)
-                        .HasColumnType("character varying(320)");
+                        .HasColumnType("character varying(320)")
+                        .HasColumnName("Email");
 
                     b.Property<Guid>("EventId")
                         .HasColumnType("uuid");
@@ -81,15 +92,18 @@ namespace Presentation.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("Name");
 
                     b.Property<DateTime>("RegistrationTime")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("RegistrationTime");
 
                     b.Property<string>("Surname")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("Surname");
 
                     b.HasKey("Id");
 
@@ -119,13 +133,11 @@ namespace Presentation.Migrations
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("text");
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("text");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("boolean");
@@ -206,13 +218,13 @@ namespace Presentation.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "0cbf1732-d2e6-4105-8389-ea6968bbe59a",
+                            Id = "20fb2fb4-1de2-46c6-aa83-4432b6f5588b",
                             Name = "Participant",
                             NormalizedName = "PARTICIPANT"
                         },
                         new
                         {
-                            Id = "56f75bb0-d636-455c-a7b9-0b260d98c597",
+                            Id = "b9512aa7-2034-4bd7-afd7-262ef668118f",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         });

@@ -13,8 +13,8 @@ public class RepositoryContext : IdentityDbContext<User>
     {
     }
 
-    public DbSet<Event>? Events { get; set; }
-    public DbSet<Participant>? Participants { get; set; }
+    public DbSet<Event> Events { get; set; }
+    public DbSet<Participant> Participants { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

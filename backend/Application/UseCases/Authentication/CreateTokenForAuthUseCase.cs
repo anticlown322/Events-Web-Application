@@ -19,7 +19,7 @@ public class CreateTokenForAuthUseCase(
             throw new InvalidCredentialsException(userDto.UserName, userDto.Password);
         }
         
-        var tokenDto = await authenticationManager.CreateToken(userEntity, populateExp);
+        var tokenDto = await authenticationManager.CreateTokens(userEntity, populateExp);
         
         if(tokenDto.AccessToken is null)
             throw new TokenNotCreatedException(nameof(tokenDto.AccessToken));

@@ -1,7 +1,7 @@
-﻿using Application.Contracts.RepositoryContracts;
-using Application.Contracts;
+﻿using Application.Contracts;
 using Application.Contracts.UseCaseContracts.Event;
 using Application.Validation.Exceptions.Specific;
+using Domain.RepositoryContracts;
 
 namespace Application.UseCases.Event;
 

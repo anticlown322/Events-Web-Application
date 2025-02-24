@@ -1,7 +1,7 @@
-﻿using Application.RequestFeatures;
-using Domain.Models;
+﻿using Domain.Models;
+using Domain.RequestFeatures;
 
-namespace Application.Contracts.RepositoryContracts;
+namespace Domain.RepositoryContracts;
 
 public interface IEventsRepository
 {

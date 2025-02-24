@@ -1,7 +1,7 @@
 ﻿using Domain.Models;
-using Application.RequestFeatures;
+using Domain.RequestFeatures;
 
-namespace Application.Contracts.RepositoryContracts;
+namespace Domain.RepositoryContracts;
 
 public interface IParticipantsRepository
 {
@@ -11,4 +11,5 @@ public interface IParticipantsRepository
         bool trackChanges, CancellationToken cancellationToken);
     void CreateParticipant(Guid eventId, Participant  participant);
     void DeleteParticipant(Participant participant);
+    public Task<bool> IsUniqueEmailAsync(string email, CancellationToken cancellationToken);
 }

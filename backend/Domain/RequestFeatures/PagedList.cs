@@ -1,4 +1,4 @@
-﻿namespace Application.RequestFeatures;
+﻿namespace Domain.RequestFeatures;
 
 public class PagedList<T> : List<T>
 {

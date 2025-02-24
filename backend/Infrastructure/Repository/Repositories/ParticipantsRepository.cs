@@ -1,6 +1,6 @@
-﻿using Application.Contracts.RepositoryContracts;
-using Application.RequestFeatures;
-using Domain.Models;
+﻿using Domain.Models;
+using Domain.RepositoryContracts;
+using Domain.RequestFeatures;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repository.Repositories;
@@ -39,12 +39,11 @@ public class ParticipantsRepository : RepositoryBase<Participant>, IParticipants
         return participantToGet.SingleOrDefault();
     }
 
-    public void CreateParticipant(Guid eventId, Participant participant)
-    {
-        participant.EventId = eventId;
-        participant.RegistrationTime = DateTime.UtcNow;
-        Create(participant);
-    }
+    public void CreateParticipant(Guid eventId, Participant participant) => Create(participant);
 
     public void DeleteParticipant(Participant participant) => Delete(participant);
+
+    public async Task<bool> IsUniqueEmailAsync(string email, CancellationToken cancellationToken) =>
+        !await RepositoryContext.Participants
+            .AnyAsync(e => e.Email == email, cancellationToken);
 }

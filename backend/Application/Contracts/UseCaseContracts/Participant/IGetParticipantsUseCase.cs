@@ -1,5 +1,5 @@
 ﻿using Application.DTO.Participants;
-using Application.RequestFeatures;
+using Domain.RequestFeatures;
 
 namespace Application.Contracts.UseCaseContracts.Participant;
 

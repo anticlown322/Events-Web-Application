@@ -1,12 +1,12 @@
-﻿using Application.Contracts.RepositoryContracts;
-using AutoMapper;
+﻿using AutoMapper;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using Application.DTO.Participants;
-using Application.RequestFeatures;
 using Application.UseCases.Participant;
 using Domain.Models;
+using Domain.RepositoryContracts;
+using Domain.RequestFeatures;
 using Infrastructure.Repository;
 
 namespace Tests.ParticipantUnitTests;

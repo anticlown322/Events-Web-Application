@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Application.Contracts.UseCaseContracts.Event;
 using Application.DTO.Events;
-using Application.RequestFeatures;
 using Application.Validation;
+using Domain.RequestFeatures;
 using Presentation.ModelBinders;
 
 namespace Presentation.Controllers;

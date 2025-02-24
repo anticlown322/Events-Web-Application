@@ -1,4 +1,4 @@
-﻿using Application.Contracts.RepositoryContracts;
+﻿using Domain.RepositoryContracts;
 using Infrastructure.Repository.Repositories;
 
 namespace Infrastructure.Repository;

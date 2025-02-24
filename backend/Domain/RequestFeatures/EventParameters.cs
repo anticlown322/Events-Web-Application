@@ -1,6 +1,6 @@
 ﻿using Domain.Models;
 
-namespace Application.RequestFeatures;
+namespace Domain.RequestFeatures;
 
 public class EventParameters : RequestParameters
 {

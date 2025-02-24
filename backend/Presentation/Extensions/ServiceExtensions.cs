@@ -1,7 +1,6 @@
 ﻿using System.Security.Claims;
 using System.Text;
 using Application.Contracts;
-using Application.Contracts.RepositoryContracts;
 using Application.Contracts.UseCaseContracts.Authentication;
 using Application.Contracts.UseCaseContracts.Event;
 using Application.Contracts.UseCaseContracts.Image;
@@ -21,6 +20,7 @@ using Application.Validation.EventValidators;
 using Application.Validation.ParticipantValidators;
 using Application.Validation.UserValidators;
 using Domain.Models;
+using Domain.RepositoryContracts;
 using FluentValidation;
 using Infrastructure;
 using Infrastructure.Logs;
@@ -90,8 +90,7 @@ public static class ServiceExtensions
         IConfiguration configuration)
     {
         services.AddDbContext<RepositoryContext>(opts =>
-            opts.UseNpgsql(configuration.GetConnectionString("sqlConnection"), b =>
-                b.MigrationsAssembly("Presentation")));
+            opts.UseNpgsql(configuration.GetConnectionString("sqlConnection")));
     }
 
     public static void ConfigureAutoMapper(this IServiceCollection services)

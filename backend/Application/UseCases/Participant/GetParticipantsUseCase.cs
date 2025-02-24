@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
-using Application.Contracts.RepositoryContracts;
 using Application.Contracts.UseCaseContracts.Participant;
 using Application.DTO.Participants;
 using Application.Validation.Exceptions.Specific;
-using Application.RequestFeatures;
+using Domain.RepositoryContracts;
+using Domain.RequestFeatures;
 
 namespace Application.UseCases.Participant;
 

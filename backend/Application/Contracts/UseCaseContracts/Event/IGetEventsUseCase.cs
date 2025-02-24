@@ -1,5 +1,5 @@
 ﻿using Application.DTO.Events;
-using Application.RequestFeatures;
+using Domain.RequestFeatures;
 
 namespace Application.Contracts.UseCaseContracts.Event;
 

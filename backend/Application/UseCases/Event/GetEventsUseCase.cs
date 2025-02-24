@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using Application.Contracts.RepositoryContracts;
 using Application.Contracts.UseCaseContracts.Event;
 using Application.DTO.Events;
-using Application.RequestFeatures;
+using Domain.RepositoryContracts;
+using Domain.RequestFeatures;
 
 namespace Application.UseCases.Event;
 

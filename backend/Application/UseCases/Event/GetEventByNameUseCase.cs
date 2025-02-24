@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using Application.Contracts.RepositoryContracts;
 using Application.Contracts.UseCaseContracts.Event;
 using Application.DTO.Events;
 using Application.Validation.Exceptions.Specific;
+using Domain.RepositoryContracts;
 
 namespace Application.UseCases.Event;
 

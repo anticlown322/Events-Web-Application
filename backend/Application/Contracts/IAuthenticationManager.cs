@@ -5,6 +5,6 @@ namespace Application.Contracts;
 
 public interface IAuthenticationManager
 {
-    Task<TokenDto> CreateToken(User user, bool populateExp);
-    public Task<TokenDto> RefreshToken(TokenDto tokenDto);
+    Task<TokenDto> CreateTokens(User user, bool populateExp);
+    Task<string> CreateAccessToken(User user);
 }

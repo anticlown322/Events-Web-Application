@@ -1,6 +1,6 @@
 ﻿using Application.Contracts;
-using Application.Contracts.RepositoryContracts;
 using Application.Validation.Exceptions.Specific;
+using Domain.RepositoryContracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 
@@ -9,31 +9,23 @@ namespace Infrastructure;
 public class ImageService : IImageService
 {
     private readonly string _imageStoragePath;
-    private IRepositoryManager _repository;
     
     public ImageService(IConfiguration configuration, IRepositoryManager repository)
     {
         var imageSettings = configuration.GetSection("ImageStorage");
         _imageStoragePath = imageSettings["Path"];
-        
-        _repository = repository;
     }
     
-    public async Task<(byte[] fileBytes, string contentType, string filename)> GetImageAsync(
-        Guid eventId, bool trackChanges, CancellationToken cancellationToken)
+    public async Task<(byte[] fileBytes, string contentType, string filename)> GetImageAsync(string imageFileName)
     {
-        var imageEvent = await _repository.Event.GetEventByIdAsync(eventId, trackChanges, cancellationToken);
-        if(imageEvent is null)
-            throw new EventNotFoundByIdException(eventId);
-        
-        var filePath = Path.Combine(_imageStoragePath, imageEvent.Image ?? "");
+        var filePath = Path.Combine(_imageStoragePath, imageFileName ?? "");
         
         if (!File.Exists(filePath))
             throw new ImageNotFoundException(filePath);
         
         var fileBytes = await File.ReadAllBytesAsync(filePath);
-        var contentType = $"image/{Path.GetExtension(imageEvent.Image).TrimStart('.').ToLowerInvariant()}";
-        return (fileBytes, contentType, imageEvent.Image);
+        var contentType = $"image/{Path.GetExtension(imageFileName).TrimStart('.').ToLowerInvariant()}";
+        return (fileBytes, contentType, imageFileName);
     }
     
     public async Task WriteFileAsync(IFormFile image)

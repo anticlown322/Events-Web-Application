@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Application.Contracts.UseCaseContracts.Participant;
 using Application.DTO.Participants;
-using Application.RequestFeatures;
 using Application.Validation;
+using Domain.RequestFeatures;
 
 namespace Presentation.Controllers;
 
