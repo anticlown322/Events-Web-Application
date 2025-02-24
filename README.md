@@ -1,4 +1,9 @@
-
+# Table of contents
+- [Overview](#eyes-overview)
+- [Startup instructions](#startup-instructions)
+- [First steps](#first-steps)
+- [Fixes (edits by 17.02.2025)](#fixes-edits-by-17022025)
+- [Fixes (edits by 24.02.2025)](#fixes-edits-by-24022025)
 
 # :eyes: Overview
 
